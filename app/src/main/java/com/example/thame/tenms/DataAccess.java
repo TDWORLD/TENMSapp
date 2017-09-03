@@ -5,4 +5,6 @@ package com.example.thame.tenms;
  */
 
 public class DataAccess {
+
+    String fdgd="jhfhgd";
 }
