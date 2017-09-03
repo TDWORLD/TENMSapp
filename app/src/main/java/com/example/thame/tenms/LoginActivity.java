@@ -1,8 +1,10 @@
 package com.example.thame.tenms;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -48,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Declaring connection variables
     Connection con;
-    String un, pass, db, ip;
+    DataAccess db;
 
     private RequestQueue requestQueue;
     //private static final String url = "http://tenms.dynu.net/androidapp/userLogin.php";
@@ -77,10 +79,7 @@ public class LoginActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
 
-        ip = "198.50.204.254";
-        db = "HRIS";
-        un = "Admin";
-        pass = "TD!sdsd";
+        db = new DataAccess();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,48 +102,25 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public String clickLogin() {
-        String z = "";
-        Boolean isSuccess = false;
-
-        ip = "198.50.204.254:1433";
-        db = "/HRIS";
-        un = "SQLRemote";
-        pass = "12345";
+    public void clickLogin() {
 
         String usernam = uname.getText().toString();
         String passwordd = pword.getText().toString();
-        if (usernam.equals("") || passwordd.equals("")){
 
-        }
-        else {
+        if(usernam != null && passwordd != null){
             try {
-                con = connectionclass(un, pass, db, ip);        // Connect to database
-                if (con == null) {
-                    AlertDialog alertDialog2 = new AlertDialog.Builder(LoginActivity.this).create();
-                    alertDialog2.setTitle("Connection error");
-                    alertDialog2.setMessage("Check your internet access");
-                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog2.show();
-                } else {
+                con =  db.getConnection();      // Connect to database
+                if (con != null) {
                     // Change below query according to your own database.
-                    String query = "SELECT * FROM tbl_User WHERE UserNameA= '" + usernam.toString() + "' AND PasswordA = '" + passwordd.toString() + "'  ";
+                    String query = "SELECT * FROM tbl_User WHERE UserName= '" + usernam.toString() + "' AND Password = '" + passwordd.toString() + "'";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
-
-                    if (rs.next()) {
-                        proLogin.setVisibility(View.GONE);
-                        isSuccess = true;
+                    if (rs.next()){
                         con.close();
                         Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                        //proLogin.setVisibility(View.INVISIBLE);
                         startActivity(intent);
-                    } else {
-                        isSuccess = false;
+                    }else{
                         AlertDialog alertDialog2 = new AlertDialog.Builder(LoginActivity.this).create();
                         alertDialog2.setTitle("Invalid");
                         alertDialog2.setMessage("Invalid username or password");
@@ -157,46 +133,25 @@ public class LoginActivity extends AppCompatActivity {
                         alertDialog2.show();
                         uname.setText("");
                         pword.setText("");
-                        proLogin.setVisibility(View.GONE);
+                        //proLogin.setVisibility(View.INVISIBLE);
                     }
+
                 }
             } catch (Exception ex) {
-                isSuccess = false;
 
-                AlertDialog alertDialog2 = new AlertDialog.Builder(LoginActivity.this).create();
-                alertDialog2.setTitle("Connection error");
-                alertDialog2.setMessage("Please check your internet connection");
-                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                AlertDialog errorDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                errorDialog.setTitle("Connection error");
+                errorDialog.setMessage("Check your internet access");
+                errorDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         });
-                alertDialog2.show();
+                errorDialog.show();
 
             }
         }
-        return z;
-    }
-
-    @SuppressLint("NewApi")
-    public Connection connectionclass(String user, String password, String database, String server) {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection connection = null;
-        String ConnectionURL = null;
-        try {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            ConnectionURL = "jdbc:jtds:sqlserver://" + server + database + ";user=" + user + ";password=" + password + ";";
-            connection = DriverManager.getConnection(ConnectionURL);
-        } catch (SQLException se) {
-            Log.e("Error : ", se.getMessage() + "\n Please contact the developer to fix this issue");
-        } catch (ClassNotFoundException e) {
-            Log.e("Error : ", e.getMessage() + " \n Please contact the developer to fix this issue");
-        } catch (Exception e) {
-            Log.e("Error : ", e.getMessage() + "\n Please contact the developer to fix this issue");
-        }
-        return connection;
     }
 
 
@@ -206,3 +161,4 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 }
+
