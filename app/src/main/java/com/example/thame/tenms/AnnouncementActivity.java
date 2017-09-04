@@ -1,13 +1,19 @@
 package com.example.thame.tenms;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,8 +25,15 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import static com.example.thame.tenms.R.string.password;
 
 public class AnnouncementActivity extends AppCompatActivity {
 
@@ -145,17 +158,96 @@ public class AnnouncementActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpAnnounce(){
+    private void setUpAnnounce() {
 
-        ListView listView = (ListView) findViewById(R.id.AnnounceList);
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,AnnounceList);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textView = (TextView) view;
-                Toast.makeText(AnnouncementActivity.this, textView.getText() , Toast.LENGTH_SHORT).show();
+        // Declaring connection variables
+        Connection con;
+        String un, pass, db, ip;
+
+        ip = "198.50.204.254";
+        db = "HRIS";
+        un = "Admin";
+        pass = "TD!sdsd";
+
+        // Connect to database
+        con = connectionclass(un, pass, db, ip);
+
+        if (con == null) {
+            AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+            alertDialog2.setTitle("Connection error");
+            alertDialog2.setMessage("Check your internet access");
+            alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog2.show();
+        } else {
+            try {
+                // Change below query according to your own database.
+                String query = "";
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+
+                if (rs.next()) {
+                    con.close();
+
+                } else {
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                    alertDialog2.setTitle("Invalid");
+                    alertDialog2.setMessage("Invalid username or password");
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+                }
+            } catch (Exception ex) {
+                AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                alertDialog2.setTitle("Connection error");
+                alertDialog2.setMessage("Please check your internet connection");
+                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog2.show();
+
             }
-        });
+
+            ListView listView = (ListView) findViewById(R.id.AnnounceList);
+            ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.listitem, R.id.Item, AnnounceList);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    TextView textView = (TextView) view;
+                    Toast.makeText(AnnouncementActivity.this, textView.getText(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    public Connection connectionclass(String user, String password, String database, String server) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        Connection connection = null;
+        String ConnectionURL = null;
+        try {
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            ConnectionURL = "jdbc:jtds:sqlserver://" + server + database + ";user=" + user + ";password=" + password + ";";
+            connection = DriverManager.getConnection(ConnectionURL);
+        } catch (SQLException se) {
+            Log.e("Error : ", se.getMessage() + "\n Please contact the developer to fix this issue");
+        } catch (ClassNotFoundException e) {
+            Log.e("Error : ", e.getMessage() + "\n Please contact the developer to fix this issue");
+        } catch (Exception e) {
+            Log.e("Error : ", e.getMessage() + "\n Please contact the developer to fix this issue");
+        }
+        return connection;
     }
 }
