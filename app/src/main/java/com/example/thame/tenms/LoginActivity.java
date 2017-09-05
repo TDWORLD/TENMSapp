@@ -109,10 +109,13 @@ public class LoginActivity extends AppCompatActivity {
 
         if(usernam != null && passwordd != null){
             try {
-                con =  db.getConnection();      // Connect to database
+                // Connect to database
+                con =  db.getConnection();
+
                 if (con != null) {
+
                     // Change below query according to your own database.
-                    String query = "SELECT * FROM tbl_User WHERE UserName= '" + usernam.toString() + "' AND Password = '" + passwordd.toString() + "'";
+                    String query = "SELECT * FROM tbl_User WHERE UsernameA= '" + usernam.toString() + "' AND PasswordA = '" + passwordd.toString() + "'";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
                     if (rs.next()){
@@ -135,7 +138,6 @@ public class LoginActivity extends AppCompatActivity {
                         pword.setText("");
                         //proLogin.setVisibility(View.INVISIBLE);
                     }
-
                 }
             } catch (Exception ex) {
 

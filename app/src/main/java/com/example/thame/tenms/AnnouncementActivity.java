@@ -87,6 +87,8 @@ public class AnnouncementActivity extends AppCompatActivity {
         spec2.setContent(R.id.layoutComplaints);
         tab.addTab(spec2);
 
+        db = new DataAccess();
+
         setUpDate();
         setUpComplain();
         setUpCatogory();
@@ -224,24 +226,5 @@ public class AnnouncementActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    public Connection connectionclass(String user, String password, String database, String server) {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection connection = null;
-        String ConnectionURL = null;
-        try {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            ConnectionURL = "jdbc:jtds:sqlserver://" + server + database + ";user=" + user + ";password=" + password + ";";
-            connection = DriverManager.getConnection(ConnectionURL);
-        } catch (SQLException se) {
-            Log.e("Error : ", se.getMessage() + "\n Please contact the developer to fix this issue");
-        } catch (ClassNotFoundException e) {
-            Log.e("Error : ", e.getMessage() + "\n Please contact the developer to fix this issue");
-        } catch (Exception e) {
-            Log.e("Error : ", e.getMessage() + "\n Please contact the developer to fix this issue");
-        }
-        return connection;
     }
 }
