@@ -37,6 +37,10 @@ import static com.example.thame.tenms.R.string.password;
 
 public class AnnouncementActivity extends AppCompatActivity {
 
+    // Declaring connection variables
+    Connection con;
+    DataAccess db;
+
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     EditText cDate;
     DatePickerDialog.OnDateSetListener DateSetListner;
@@ -159,18 +163,8 @@ public class AnnouncementActivity extends AppCompatActivity {
     }
 
     private void setUpAnnounce() {
-
-        // Declaring connection variables
-        Connection con;
-        String un, pass, db, ip;
-
-        ip = "198.50.204.254";
-        db = "HRIS";
-        un = "Admin";
-        pass = "TD!sdsd";
-
         // Connect to database
-        con = connectionclass(un, pass, db, ip);
+        con =  db.getConnection();
 
         if (con == null) {
             AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
@@ -186,7 +180,7 @@ public class AnnouncementActivity extends AppCompatActivity {
         } else {
             try {
                 // Change below query according to your own database.
-                String query = "";
+                String query = "SELECT * FROM Announcement";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
 
@@ -196,7 +190,7 @@ public class AnnouncementActivity extends AppCompatActivity {
                 } else {
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                     alertDialog2.setTitle("Invalid");
-                    alertDialog2.setMessage("Invalid username or password");
+                    alertDialog2.setMessage("Invalid query");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
