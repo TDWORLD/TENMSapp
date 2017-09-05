@@ -48,7 +48,8 @@ public class AnnouncementActivity extends AppCompatActivity {
     String dataList[] = new String[]{"COMO001 - dbsfhsdb","COMO002 - hfsdhdsf","COMO003 - fsdhfh"};
     String CategoryList[] = new String[]{"Accountant","Driver","Sales","Marketing","Security"};
 
-    String AnnounceList[] = new String[]{
+    String AnnounceList[] = new String[]{"","","","","","","","","",""};
+            /*{
             "A001 - hello welcome",
             "A002 - Dear Staff: \n We're excited to add Brian to our team. He brings us 10 years of increasingly responsible experience in creating quality software.",
             "A003 - Dear Staff: \n Following his onboarding, we expect that Brian will take the lead technician role with the group. All of the technicians participated in selecting Brian for the role.",
@@ -61,7 +62,7 @@ public class AnnouncementActivity extends AppCompatActivity {
             "A010 - Dear Staff: \n Ann Thompson is joining Mediquick Products to fill our open position in customer service. Her first day is Tuesday, April 8.",
             "A011 - Dear Staff: \n Ann's new employee mentor is Mark Veja, so if you have questions or need to meet with Ann, you can talk with Mark before she starts.",
             "A012 - Dear Staff: \n She has a lot to share with her new coworkers as she loves cats, square dances weekly, and volunteers in a local homeless shelter.",
-    };
+    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,7 @@ public class AnnouncementActivity extends AppCompatActivity {
         setUpComplain();
         setUpCatogory();
         setUpAnnounce();
+
     }
 
 
@@ -185,9 +187,19 @@ public class AnnouncementActivity extends AppCompatActivity {
                 String query = "SELECT * FROM Announcement";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
+                int arrayValue = 0;
 
-                if (rs.next()) {
-                    con.close();
+                if (rs!=null) {
+                    try{
+                        while(rs.next()){
+                            String id = rs.getString("AnnouncementID");
+                            String title = rs.getString("AnnouncementTitle");
+                            AnnounceList[arrayValue] = id+"-"+title;
+                            arrayValue += 1;
+                        }
+                    }catch (Exception ex){
+
+                    }
 
                 } else {
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
@@ -222,9 +234,12 @@ public class AnnouncementActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     TextView textView = (TextView) view;
-                    Toast.makeText(AnnouncementActivity.this, textView.getText(), Toast.LENGTH_SHORT).show();
+                    if(textView.getText() != null && !textView.getText().equals("")) {
+                        Toast.makeText(AnnouncementActivity.this, textView.getText(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
     }
+
 }
