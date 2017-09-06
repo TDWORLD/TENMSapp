@@ -45,8 +45,8 @@ public class AnnouncementActivity extends AppCompatActivity {
     EditText cDate;
     DatePickerDialog.OnDateSetListener DateSetListner;
 
-    String dataList[] = new String[]{"COMO001 - dbsfhsdb","COMO002 - hfsdhdsf","COMO003 - fsdhfh"};
-    String CategoryList[] = new String[]{"Accountant","Driver","Sales","Marketing","Security"};
+    String dataList[] = new String[]{"COMO001 - Careless driver","COMO002 - Monitor misplaced","COMO003 - Sales orders not handled properly"};
+    String CategoryList[] = new String[]{"Accountant","Driver","Sales","Marketing","Security","Other"};
 
     String AnnounceList[] = new String[]{"","","","","","","","","",""};
             /*{
@@ -156,7 +156,9 @@ public class AnnouncementActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (spinner.getSelectedItemId()==0){
 
+                }
             }
 
             @Override
@@ -194,10 +196,21 @@ public class AnnouncementActivity extends AppCompatActivity {
                         while(rs.next()){
                             String id = rs.getString("AnnouncementID");
                             String title = rs.getString("AnnouncementTitle");
-                            AnnounceList[arrayValue] = id+"-"+title;
+                            String body= rs.getString("AnnouncementBody");
+                            AnnounceList[arrayValue] = id+" - "+title+"\n"+body;
                             arrayValue += 1;
                         }
                     }catch (Exception ex){
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                        alertDialog2.setTitle("Error");
+                        alertDialog2.setMessage("Error: "+ex.toString());
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog2.show();
 
                     }
 
