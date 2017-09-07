@@ -43,9 +43,10 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     EditText cDate;
+    EditText complainState = (EditText)findViewById(R.id.editText2);
     DatePickerDialog.OnDateSetListener DateSetListner;
 
-    String dataList[] = new String[]{"COMO001 - Careless driver","COMO002 - Monitor misplaced","COMO003 - Sales orders not handled properly"};
+    String dataList[] = new String[]{"","","","","","","","","",""};
     String CategoryList[] = new String[]{"Accountant","Driver","Sales","Marketing","Security","Other"};
 
     String AnnounceList[] = new String[]{"","","","","","","","","",""};
@@ -132,38 +133,182 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     private void setUpComplain(){
         ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,dataList);
-        final Spinner spinner = (Spinner) findViewById(R.id.loanItem);
-        spinner.setAdapter(adapter);
+        final Spinner spinner2 = (Spinner) findViewById(R.id.loanItem);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        try {
+            // Change below query according to your own database.
+            String query = "SELECT ComplainID,ComplainTitle FROM Complain";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            int arrayValue = 0;
+
+            if (rs!=null) {
+                try{
+                    while(rs.next()){
+                        String cid = rs.getString("ComplainID");
+                        String ctitle = rs.getString("ComplainTitle");
+                        dataList[arrayValue] = cid+" - "+ctitle;
+                        arrayValue += 1;
+                    }
+                }catch (Exception ex){
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                    alertDialog2.setTitle("Error");
+                    alertDialog2.setMessage("Error: "+ex.toString());
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+
+                }
+
+            } else {
+                AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                alertDialog2.setTitle("Invalid");
+                alertDialog2.setMessage("Invalid query");
+                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog2.show();
+            }
+        } catch (Exception ex) {
+            AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+            alertDialog2.setTitle("Connection error");
+            alertDialog2.setMessage("Please check your internet connection");
+            alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog2.show();
+
+        }
+
+        spinner2.setAdapter(adapter);
+
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    String complain = spinner2.getSelectedItem().toString().substring(0,7);;
+                    // Change below query according to your own database.
+                    String query = "SELECT * FROM Complain WHERE ComplainID='"+complain+"'";
+                    Statement stmt = con.createStatement();
+                    ResultSet rs = stmt.executeQuery(query);
 
-            }
+                    if (rs!=null) {
+                        try{
+                                complainState.setText(rs.getString("ComplainState"));
+                        }catch (Exception ex){
+                            AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                            alertDialog2.setTitle("Error");
+                            alertDialog2.setMessage("Error: "+ex.toString());
+                            alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog2.show();
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                        }
 
-            }
-        });
-    }
-
-    private void setUpCatogory(){
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,CategoryList);
-        final Spinner spinner = (Spinner) findViewById(R.id.complainType);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (spinner.getSelectedItemId()==0){
+                    } else {
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                        alertDialog2.setTitle("Invalid");
+                        alertDialog2.setMessage("No values found");
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog2.show();
+                    }
+                } catch (Exception ex) {
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                    alertDialog2.setTitle("Connection error");
+                    alertDialog2.setMessage("Please check your internet connection");
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
 
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                alertDialog2.setTitle("Error");
+                alertDialog2.setMessage("Nothing selected");
+                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog2.show();
+            }
+        });
+    }
 
+    private void setUpCatogory(){
+        ArrayAdapter adapter2 = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,CategoryList);
+        final Spinner spinner = (Spinner) findViewById(R.id.complainType);
+        spinner.setAdapter(adapter2);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (spinner.getSelectedItemId()==0){
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                    alertDialog2.setTitle("Invalid");
+                    alertDialog2.setMessage("Here1");
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+                }
+                else
+                {
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                    alertDialog2.setTitle("Invalid");
+                    alertDialog2.setMessage("Here2");
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                alertDialog2.setTitle("Invalid");
+                alertDialog2.setMessage("Here nothing");
+                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog2.show();
             }
         });
     }
