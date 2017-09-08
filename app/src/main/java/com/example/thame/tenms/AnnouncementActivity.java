@@ -43,7 +43,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     EditText cDate;
-    EditText complainState = (EditText)findViewById(R.id.editText2);
+//    EditText complainState = (EditText)findViewById(R.id.editText2);  Problem Here
     DatePickerDialog.OnDateSetListener DateSetListner;
 
     String dataList[] = new String[]{"","","","","","","","","",""};
@@ -90,6 +90,7 @@ public class AnnouncementActivity extends AppCompatActivity {
         tab.addTab(spec2);
 
         db = new DataAccess();
+        con =  db.getConnection();
 
         setUpDate();
         setUpComplain();
@@ -137,6 +138,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
         try {
             // Change below query according to your own database.
+
             String query = "SELECT ComplainID,ComplainTitle FROM Complain";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -204,7 +206,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
                     if (rs!=null) {
                         try{
-                                complainState.setText(rs.getString("ComplainState"));
+                                //complainState.setText(rs.getString("ComplainState"));
                         }catch (Exception ex){
                             AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                             alertDialog2.setTitle("Error");
@@ -315,7 +317,6 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     private void setUpAnnounce() {
         // Connect to database
-        con =  db.getConnection();
 
         if (con == null) {
             AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();

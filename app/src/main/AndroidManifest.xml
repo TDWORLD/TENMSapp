@@ -36,7 +36,7 @@
         <activity
             android:name=".PinActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".AnnouncementActivity" />
+        <activity android:name="com.example.thame.tenms.AnnouncementActivity" />
         <activity android:name=".AttendanceActivity" />
         <activity android:name=".SalaryActivity" />
         <activity android:name=".LoanActivity" />
