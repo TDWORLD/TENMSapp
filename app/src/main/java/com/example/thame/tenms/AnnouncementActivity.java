@@ -43,7 +43,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     EditText cDate;
-//    EditText complainState = (EditText)findViewById(R.id.editText2);  Problem Here
+    EditText complainState;
     DatePickerDialog.OnDateSetListener DateSetListner;
 
     String dataList[] = new String[]{"","","","","","","","","",""};
@@ -197,6 +197,7 @@ public class AnnouncementActivity extends AppCompatActivity {
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                complainState = (EditText)findViewById(R.id.txtComplainState);
                 try {
                     String complain = spinner2.getSelectedItem().toString().substring(0,7);;
                     // Change below query according to your own database.
@@ -206,7 +207,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
                     if (rs!=null) {
                         try{
-                                //complainState.setText(rs.getString("ComplainState"));
+                                complainState.setText(rs.getString("ComplainState"));
                         }catch (Exception ex){
                             AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                             alertDialog2.setTitle("Error");
