@@ -201,10 +201,9 @@ public class AnnouncementActivity extends AppCompatActivity {
                 try {
                     String complain = spinner2.getSelectedItem().toString();
                     String complain2 = complain.substring(0,7);
-
                     // Change below query according to your own database.
-                    String query = "SELECT * FROM Complain WHERE ComplainID="+complain2;
-                    AlertDialog alertDialog4 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                    String query = "SELECT * FROM Complain WHERE ComplainID = '"+complain2+"'";
+                    /*AlertDialog alertDialog4 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                     alertDialog4.setTitle("Info");
                     alertDialog4.setMessage(query);
                     alertDialog4.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
@@ -213,13 +212,13 @@ public class AnnouncementActivity extends AppCompatActivity {
                                     dialog.dismiss();
                                 }
                             });
-                    alertDialog4.show();
+                    alertDialog4.show();*/
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
 
-                    if (rs!=null) {
+                    if (rs.next()) {
                         try{
-                                complainState.setText(rs.getString("ComplainState"));
+                            complainState.setText(rs.getString("ComplainState"));
                         }catch (Exception ex){
                             AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                             alertDialog2.setTitle("Error here");
