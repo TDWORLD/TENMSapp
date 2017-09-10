@@ -199,9 +199,21 @@ public class AnnouncementActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 complainState = (EditText)findViewById(R.id.txtComplainState);
                 try {
-                    String complain = spinner2.getSelectedItem().toString().substring(0,7);;
+                    String complain = spinner2.getSelectedItem().toString();
+                    String complain2 = complain.substring(0,7);
+
                     // Change below query according to your own database.
-                    String query = "SELECT * FROM Complain WHERE ComplainID='"+complain+"'";
+                    String query = "SELECT * FROM Complain WHERE ComplainID="+complain2;
+                    AlertDialog alertDialog4 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                    alertDialog4.setTitle("Info");
+                    alertDialog4.setMessage(query);
+                    alertDialog4.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog4.show();
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
 
@@ -210,7 +222,7 @@ public class AnnouncementActivity extends AppCompatActivity {
                                 complainState.setText(rs.getString("ComplainState"));
                         }catch (Exception ex){
                             AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                            alertDialog2.setTitle("Error");
+                            alertDialog2.setTitle("Error here");
                             alertDialog2.setMessage("Error: "+ex.toString());
                             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                                     new DialogInterface.OnClickListener() {
