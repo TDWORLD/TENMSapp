@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -43,6 +44,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     EditText cDate;
+    Button btnComplain = (Button)findViewById(R.id.btnSave);
     EditText complainState;
     DatePickerDialog.OnDateSetListener DateSetListner;
 
@@ -96,7 +98,13 @@ public class AnnouncementActivity extends AppCompatActivity {
         setUpComplain();
         setUpCatogory();
         setUpAnnounce();
-
+/*
+        btnComplain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickComplain();
+            }
+        });*/
     }
 
 
@@ -203,16 +211,6 @@ public class AnnouncementActivity extends AppCompatActivity {
                     String complain2 = complain.substring(0,7);
                     // Change below query according to your own database.
                     String query = "SELECT * FROM Complain WHERE ComplainID = '"+complain2+"'";
-                    /*AlertDialog alertDialog4 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                    alertDialog4.setTitle("Info");
-                    alertDialog4.setMessage(query);
-                    alertDialog4.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog4.show();*/
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
 
@@ -280,51 +278,6 @@ public class AnnouncementActivity extends AppCompatActivity {
         ArrayAdapter adapter2 = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,CategoryList);
         final Spinner spinner = (Spinner) findViewById(R.id.complainType);
         spinner.setAdapter(adapter2);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (spinner.getSelectedItemId()==0){
-                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                    alertDialog2.setTitle("Invalid");
-                    alertDialog2.setMessage("Here1");
-                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog2.show();
-                }
-                else
-                {
-                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                    alertDialog2.setTitle("Invalid");
-                    alertDialog2.setMessage("Here2");
-                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog2.show();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                alertDialog2.setTitle("Invalid");
-                alertDialog2.setMessage("Here nothing");
-                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog2.show();
-            }
-        });
     }
 
     private void setUpAnnounce() {
@@ -413,4 +366,39 @@ public class AnnouncementActivity extends AppCompatActivity {
         }
     }
 
+    private void clickComplain()
+    {
+        final String[] categoryName = new String[1];
+        final Spinner spinner = (Spinner) findViewById(R.id.complainType);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                categoryName[0] = spinner.getSelectedItem().toString();
+                AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                alertDialog2.setTitle("Info");
+                alertDialog2.setMessage(categoryName[0]);
+                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog2.show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                alertDialog2.setTitle("Invalid");
+                alertDialog2.setMessage("Here nothing");
+                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog2.show();
+            }
+        });
+    }
 }
