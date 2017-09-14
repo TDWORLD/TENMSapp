@@ -64,16 +64,16 @@ public class LoanActivity extends AppCompatActivity {
 
     }
 
-    private void setLoan(){
+    public void setLoan(){
         ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,dataList);
         final Spinner spinner2 = (Spinner) findViewById(R.id.loanItem);
 
         try {
             // Change below query according to your own database.
 
-            String query = "SELECT LoanID,ProposedAmount FROM Loan";
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            String query = "SELECT * FROM Loan";
+            Statement stmt2 = con.createStatement();
+            ResultSet rs = stmt2.executeQuery(query);
             int arrayValue = 0;
 
             if (rs!=null) {
@@ -98,7 +98,8 @@ public class LoanActivity extends AppCompatActivity {
 
                 }
 
-            } else {
+            }
+            else {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(LoanActivity.this).create();
                 alertDialog2.setTitle("Invalid");
                 alertDialog2.setMessage("Invalid query");
