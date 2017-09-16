@@ -31,6 +31,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -44,8 +45,13 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     EditText cDate;
-    Button btnComplain = (Button)findViewById(R.id.btnSave);
+    Button btnComplain;
     EditText complainState;
+    EditText txtComplainID;
+    Spinner spComplainType;
+    EditText txtComplainTitle;
+    EditText txtComplain;
+
     DatePickerDialog.OnDateSetListener DateSetListner;
 
     String dataList[] = new String[]{"","","","","","","","","",""};
@@ -98,13 +104,8 @@ public class AnnouncementActivity extends AppCompatActivity {
         setUpComplain();
         setUpCatogory();
         setUpAnnounce();
-/*
-        btnComplain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickComplain();
-            }
-        });*/
+        clickComplain();
+
     }
 
 
@@ -134,7 +135,7 @@ public class AnnouncementActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                String date = year + "/" + month + "/" + dayOfMonth;
+                String date = year + "-" + month + "-" + dayOfMonth;
                 cDate.setText(date);
             }
         };
@@ -275,9 +276,33 @@ public class AnnouncementActivity extends AppCompatActivity {
     }
 
     private void setUpCatogory(){
-        ArrayAdapter adapter2 = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,CategoryList);
-        final Spinner spinner = (Spinner) findViewById(R.id.complainType);
-        spinner.setAdapter(adapter2);
+            String query = "SELECT DesignationName FROM Designation";
+            Statement stmt = null;
+            try {
+                ArrayAdapter adapter2 = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,CategoryList);
+                spComplainType = (Spinner) findViewById(R.id.complainType);
+                spComplainType.setAdapter(adapter2);
+
+                /*stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                if (rs!=null){
+                    rs.last();
+                    int count = rs.getRow();
+                    rs.beforeFirst();
+                    CategoryList = new String[count];
+                    count = 0;
+                    while(rs.next()) {
+                        String desiName = rs.getString("DesignationName");
+                        CategoryList[count] = desiName;
+                        count++;
+                    }
+
+                }*/
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
     }
 
     private void setUpAnnounce() {
@@ -366,39 +391,95 @@ public class AnnouncementActivity extends AppCompatActivity {
         }
     }
 
-    private void clickComplain()
-    {
+    private void clickComplain() {
+        getID();
         final String[] categoryName = new String[1];
+        btnComplain = (Button)findViewById(R.id.btnSave);
         final Spinner spinner = (Spinner) findViewById(R.id.complainType);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoryName[0] = spinner.getSelectedItem().toString();
-                AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                alertDialog2.setTitle("Info");
-                alertDialog2.setMessage(categoryName[0]);
-                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog2.show();
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                alertDialog2.setTitle("Invalid");
-                alertDialog2.setMessage("Here nothing");
-                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog2.show();
+
             }
         });
+
+        Button btnClick = (Button) findViewById(R.id.btnComplainSave);
+        txtComplainTitle = (EditText) findViewById(R.id.txtComplainTitle);
+        txtComplain = (EditText) findViewById(R.id.txtComplain);
+        btnClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+
+                    String Query = "INSERT INTO Complain(ComplainID,ComplainTitle,ComplainBody,ComplainCategory,ComplainDate,ComplainState) VALUES('"+txtComplainID.getText()+"','"+txtComplainTitle.getText()+"','"+spComplainType.getSelectedItem()+"','"+txtComplain.getText()+"','"+cDate.getText()+"','Open')";
+                    //String Query = "INSERT INTO Complain VALUES('kkkkk','bbbbb','lllll','fgdfgfdg','2017-05-25','Open')";
+                    Statement stmt = null;
+                    stmt = con.createStatement();
+                    Boolean res = stmt.execute(Query);
+
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                    alertDialog2.setTitle("Success");
+                    alertDialog2.setMessage("Your Complain Added Successful");
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+                    getID();
+                    Clean();
+                    setUpComplain();
+                }catch (Exception ex){
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                    alertDialog2.setTitle("Error");
+                    alertDialog2.setMessage("Somethings Wrong");
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+                }
+            }
+        });
+    }
+
+    public void getID(){
+        String query = "SELECT MAX(ComplainID) FROM Complain";
+        Statement stmt = null;
+        txtComplainID = (EditText) findViewById(R.id.txtComplainID);
+        try{
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs!=null){
+                while (rs.next()){
+                    int x = Integer.parseInt(rs.getString("").substring(3));
+                    x++;
+                    String s = "COM"+new DecimalFormat("0000").format(x);
+                    txtComplainID.setText(s);
+                    txtComplainID.setEnabled(false);
+                }
+            }else{
+                String s = "COM0001";
+                txtComplainID.setText(s);
+                txtComplainID.setEnabled(false);
+            }
+        }catch (Exception ex){
+
+        }
+    }
+
+    public void Clean(){
+        txtComplain.setText("");
+        txtComplainTitle.setText("");
+        spComplainType.setSelection(0);
+        cDate.setText("");
     }
 }
