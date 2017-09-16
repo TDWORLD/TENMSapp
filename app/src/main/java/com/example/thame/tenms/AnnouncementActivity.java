@@ -33,6 +33,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import static com.example.thame.tenms.R.string.password;
@@ -54,10 +55,12 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     DatePickerDialog.OnDateSetListener DateSetListner;
 
-    String dataList[] = new String[]{"","","","","","","","","",""};
+    //String dataList[] = new String[]{"","","","","","","","","",""};
+    ArrayList<String> dataList = new ArrayList<String>();
     String CategoryList[] = new String[]{"Accountant","Driver","Sales","Marketing","Security","Other"};
 
-    String AnnounceList[] = new String[]{"","","","","","","","","",""};
+    //String AnnounceList[] = new String[]{"","","","","","","","","",""};
+    ArrayList<String> AnnounceList = new ArrayList<String>();
             /*{
             "A001 - hello welcome",
             "A002 - Dear Staff: \n We're excited to add Brian to our team. He brings us 10 years of increasingly responsible experience in creating quality software.",
@@ -105,6 +108,7 @@ public class AnnouncementActivity extends AppCompatActivity {
         setUpCatogory();
         setUpAnnounce();
         clickComplain();
+        clickClear();
 
     }
 
@@ -158,7 +162,8 @@ public class AnnouncementActivity extends AppCompatActivity {
                     while(rs.next()){
                         String cid = rs.getString("ComplainID");
                         String ctitle = rs.getString("ComplainTitle");
-                        dataList[arrayValue] = cid+" - "+ctitle;
+                        //dataList[arrayValue] = cid+" - "+ctitle;
+                        dataList.add(arrayValue,cid+" - "+ctitle);
                         arrayValue += 1;
                     }
                 }catch (Exception ex){
@@ -333,7 +338,8 @@ public class AnnouncementActivity extends AppCompatActivity {
                             String id = rs.getString("AnnouncementID");
                             String title = rs.getString("AnnouncementTitle");
                             String body= rs.getString("AnnouncementBody");
-                            AnnounceList[arrayValue] = id+" - "+title+"\n"+body;
+                            //AnnounceList[arrayValue] = id+" - "+title+"\n"+body;
+                            AnnounceList.add(arrayValue,id+" - "+title+"\n"+body);
                             arrayValue += 1;
                         }
                     }catch (Exception ex){
@@ -394,7 +400,7 @@ public class AnnouncementActivity extends AppCompatActivity {
     private void clickComplain() {
         getID();
         final String[] categoryName = new String[1];
-        btnComplain = (Button)findViewById(R.id.btnSave);
+        //btnComplain = (Button)findViewById(R.id.btnComplainSave);
         final Spinner spinner = (Spinner) findViewById(R.id.complainType);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -434,7 +440,6 @@ public class AnnouncementActivity extends AppCompatActivity {
                     alertDialog2.show();
                     getID();
                     Clean();
-                    setUpComplain();
                 }catch (Exception ex){
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                     alertDialog2.setTitle("Error");
@@ -447,6 +452,17 @@ public class AnnouncementActivity extends AppCompatActivity {
                             });
                     alertDialog2.show();
                 }
+            }
+        });
+    }
+
+    private void clickClear(){
+        Button btnClear = (Button) findViewById(R.id.btnComplainClear);
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getID();
+                Clean();
             }
         });
     }

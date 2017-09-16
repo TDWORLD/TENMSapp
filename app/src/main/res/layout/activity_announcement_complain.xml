@@ -195,7 +195,7 @@
                             android:text="COMPLAIN" />
 
                         <Button
-                            android:id="@+id/btnComplainCancel"
+                            android:id="@+id/btnComplainClear"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="30dp"
@@ -203,7 +203,7 @@
                             android:layout_marginRight="30dp"
                             android:layout_marginTop="20dp"
                             android:background="@drawable/btn_blue"
-                            android:text="CANCEL" />
+                            android:text="CLEAR" />
 
                     </LinearLayout>
 

@@ -189,7 +189,7 @@
                                 android:text="Intrest" />
 
                             <EditText
-                                android:id="@+id/txtIntrest"
+                                android:id="@+id/txtLoanIntrest"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
@@ -240,7 +240,7 @@
                                 android:text="No of Months Remaining" />
 
                             <EditText
-                                android:id="@+id/txtMonthsRemaining"
+                                android:id="@+id/txtLoanMonthsRemaining"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
@@ -257,7 +257,7 @@
                                 android:text="Monthly Reduction" />
 
                             <EditText
-                                android:id="@+id/txtMonthlyReduction"
+                                android:id="@+id/txtLoanMonthlyReduction"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
