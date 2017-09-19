@@ -86,7 +86,7 @@ public class TrainingActivity extends AppCompatActivity {
 
         try {
             // Change below query according to your own database.
-            String query = "SELECT TrainingID,TrainingTitle FROM Training";
+            String query = "SELECT TrainingEventID,TrainingHeader FROM TrainingEvent";
             Statement stmt2 = con.createStatement();
             rs = stmt2.executeQuery(query);
             int arrayValue = 0;
@@ -94,8 +94,8 @@ public class TrainingActivity extends AppCompatActivity {
             if (rs!=null) {
                 try{
                     while(rs.next()){
-                        String Tid = rs.getString("TrainingID");
-                        String TTle = rs.getString("TrainingTitle");
+                        String Tid = rs.getString("TrainingEventID");
+                        String TTle = rs.getString("TrainingHeader");
                         //dataList[arrayValue] = Tid+"-"+TTle;
                         dataList.add(arrayValue,Tid+" - "+TTle);
                         arrayValue += 1;
@@ -161,24 +161,30 @@ public class TrainingActivity extends AppCompatActivity {
     }
 
     public void LoadTraining(String Tid){
-        ResultSet rs;
+        ResultSet rs,rs3;
         try {
             // Change below query according to your own database.
-            String query = "SELECT * FROM Training WHERE TrainingID='"+Tid+"'";
+            String query = "SELECT * FROM TrainingEvent WHERE TrainingEventID='"+Tid+"'";
             Statement stmt2 = con.createStatement();
             rs = stmt2.executeQuery(query);
             int arrayValue = 0;
 
+            String query3 = "SELECT * FROM TrainingEvent WHERE TrainingEventID='"+Tid+"'";
+            Statement stmt3 = con.createStatement();
+            rs3 = stmt3.executeQuery(query3);
+
+            String EmpCategory = rs3.toString();
+
             if (rs!=null) {
                 try{
                     while(rs.next()){
-                        TrainID.setText(rs.getString("TrainingID"));
-                        TrainHeader.setText(rs.getString("TrainTitle"));
-                        Description.setText(rs.getString("Description"));
-                        TrainEmpCategory.setText(rs.getString("TrainEmpCategory"));
-                        TrainStartDate.setText(rs.getString("TrainStartDate"));
-                        TrainStartTime.setText(rs.getString("TrainStartTime"));
-                        TrainSeats.setText(rs.getString("TrainSeats"));
+                        TrainID.setText(rs.getString("TrainingEventID"));
+                        TrainHeader.setText(rs.getString("TrainHeader"));
+                        Description.setText(rs.getString("TrainingDesc"));
+                        TrainEmpCategory.setText(EmpCategory);
+                        TrainStartDate.setText(rs.getString("TrainingStartDate"));
+                        TrainStartTime.setText(rs.getString("TrainingStartTime"));
+                        TrainSeats.setText(rs.getString("NoOfSeats"));
                     }
                 }catch (Exception ex){
                     AlertDialog alertDialog2 = new AlertDialog.Builder(TrainingActivity.this).create();
