@@ -169,19 +169,13 @@ public class TrainingActivity extends AppCompatActivity {
             rs = stmt2.executeQuery(query);
             int arrayValue = 0;
 
-            String query3 = "SELECT * FROM TrainingEvent WHERE TrainingEventID='"+Tid+"'";
-            Statement stmt3 = con.createStatement();
-            rs3 = stmt3.executeQuery(query3);
-
-            String EmpCategory = rs3.toString();
-
             if (rs!=null) {
                 try{
                     while(rs.next()){
                         TrainID.setText(rs.getString("TrainingEventID"));
-                        TrainHeader.setText(rs.getString("TrainHeader"));
+                        TrainHeader.setText(rs.getString("TrainingHeader"));
                         Description.setText(rs.getString("TrainingDesc"));
-                        TrainEmpCategory.setText(EmpCategory);
+                        TrainEmpCategory.setText("Manager");
                         TrainStartDate.setText(rs.getString("TrainingStartDate"));
                         TrainStartTime.setText(rs.getString("TrainingStartTime"));
                         TrainSeats.setText(rs.getString("NoOfSeats"));
@@ -213,6 +207,8 @@ public class TrainingActivity extends AppCompatActivity {
                         });
                 alertDialog2.show();
             }
+
+
         } catch (Exception ex) {
             AlertDialog alertDialog2 = new AlertDialog.Builder(TrainingActivity.this).create();
             alertDialog2.setTitle("Connection error");

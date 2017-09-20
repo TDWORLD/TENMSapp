@@ -70,8 +70,8 @@ public class LeaveActivity extends AppCompatActivity {
         TabHost tab = (TabHost) findViewById(R.id.tabHost);
         tab.setup();
 
-        TabSpec spec1 = tab.newTabSpec("Summery");
-        spec1.setIndicator("Summery");
+        TabSpec spec1 = tab.newTabSpec("Summary");
+        spec1.setIndicator("Summary");
         spec1.setContent(R.id.layoutSummery);
         tab.addTab(spec1);
 
