@@ -85,7 +85,7 @@ public class EmployeeActivity extends AppCompatActivity {
     }
 
     public void setupEmployee(){
-        String empid="1";
+        String empid=((Global)this.getApplication()).getEmpID();
 
         ResultSet rs,rs3;
         try {

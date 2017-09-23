@@ -79,7 +79,9 @@ public class LoginActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
 
+        // Connect to database
         db = new DataAccess();
+        con =  db.getConnection();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,8 +111,6 @@ public class LoginActivity extends AppCompatActivity {
 
         if(usernam != null && passwordd != null){
             try {
-                // Connect to database
-                con =  db.getConnection();
 
                 if (con != null) {
 
@@ -119,12 +119,13 @@ public class LoginActivity extends AppCompatActivity {
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
                     if (rs.next()){
-                        con.close();
+                        //con.close();
                         ((Global)this.getApplication()).setUserName(usernam.toString());
                         ((Global)this.getApplication()).setEmpID(rs.getString("EmpID"));
                         Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                         //proLogin.setVisibility(View.INVISIBLE);
                         startActivity(intent);
+                        finish();
                     }else{
                         AlertDialog alertDialog2 = new AlertDialog.Builder(LoginActivity.this).create();
                         alertDialog2.setTitle("Invalid");
@@ -145,7 +146,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 AlertDialog errorDialog = new AlertDialog.Builder(LoginActivity.this).create();
                 errorDialog.setTitle("Connection error");
-                errorDialog.setMessage("Check your internet access");
+                //errorDialog.setMessage("Check your internet access");
+                errorDialog.setMessage(ex.toString());
                 errorDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
