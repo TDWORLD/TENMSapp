@@ -430,7 +430,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                     alertDialog2.setTitle("Success");
-                    alertDialog2.setMessage("Your Complain Added Successful");
+                    alertDialog2.setMessage("Your Complain Added Successfully");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {

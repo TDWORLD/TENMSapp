@@ -163,7 +163,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginTop="10dp"
-                                android:text="lbladd2" />
+                                android:text="Address 2 :" />
 
                             <EditText
                                 android:id="@+id/txtAddress2"
@@ -182,7 +182,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginTop="10dp"
-                                android:text="Address 3 :" />
+                                android:text="Gender :" />
 
                             <EditText
                                 android:id="@+id/txtAddress3"
@@ -192,8 +192,7 @@
                                 android:layout_marginRight="10dp"
                                 android:ems="10"
                                 android:enabled="true"
-                                android:inputType="textPersonName"
-                                android:text="Matara" />
+                                android:inputType="textPersonName" />
 
                             <TextView
                                 android:id="@+id/lbltp"
@@ -242,12 +241,12 @@
                                 android:text="0719586458" />
 
                             <TextView
-                                android:id="@+id/lblEmail"
+                                android:id="@+id/lblNIC"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginTop="10dp"
-                                android:text="E-mail :" />
+                                android:text="NIC :" />
 
                             <EditText
                                 android:id="@+id/txtEmail"
@@ -261,12 +260,12 @@
                                 android:text="thame@gmail.com" />
 
                             <TextView
-                                android:id="@+id/lblpassword"
+                                android:id="@+id/lblDOB"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginTop="10dp"
-                                android:text="Password :" />
+                                android:text="Date of Birth :" />
 
                             <EditText
                                 android:id="@+id/txtPassword"
@@ -276,8 +275,8 @@
                                 android:layout_marginRight="10dp"
                                 android:ems="10"
                                 android:enabled="true"
-                                android:hint="PASSWORD"
-                                android:inputType="textPassword" />
+                                android:hint="Date of Birth"
+                                android:inputType="text" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
