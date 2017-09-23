@@ -2,14 +2,21 @@ package com.example.thame.tenms;
 
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,6 +24,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -37,24 +45,38 @@ import java.util.List;
 @TargetApi(Build.VERSION_CODES.N)
 public class LeaveActivity extends AppCompatActivity {
 
+    // Declaring connection variables
+    Connection con;
+    DataAccess db;
+
     String chartHeader[] = {"Approved", "Rejected", "Pending", "Leave Left"};
     int charValue[] = {3, 2, 1, 6};
     String TotalDays = "10";
     int chartColor[] = {Color.rgb(44, 197, 78), Color.rgb(219, 84, 68), Color.rgb(13, 140, 231), Color.rgb(80, 85, 87)};
     String beginD;
     String endD;
+    String EmpID;
+    Date begin;
+    Date end;
 
-    String YearList[] = new String[]{"2014","2015","2016","2017"};
+    String YearList[] = new String[]{"2013","2014","2015","2016","2017"};
     String MonthList[] = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
-    String LeaveTypeList[] = new String[]{"Casual","No Pay","Annual","Sick"};
+    String LeaveTypeList[] = new String[]{"-Select-","Full Day","Half Day","Short Leave","No Pay"};
 
     EditText beginDate;
     EditText endDate;
+    Spinner spLeaveType;
     DatePickerDialog.OnDateSetListener startDateSetListner;
     DatePickerDialog.OnDateSetListener endDateSetListner;
+    EditText LeaveID;
+    EditText Reason;
+    EditText NoOfDays;
 
     EditText numdays;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+    Date date = new Date();
+    String Today = dateFormat.format(date).toString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +88,11 @@ public class LeaveActivity extends AppCompatActivity {
         actionbar.setDisplayUseLogoEnabled(true);
         actionbar.setDisplayShowHomeEnabled(true);
         actionbar.setTitle("  Leave");
+
+        db = new DataAccess();
+        con =  db.getConnection();
+
+        EmpID = ((Global)this.getApplication()).getEmpID();
 
         TabHost tab = (TabHost) findViewById(R.id.tabHost);
         tab.setup();
@@ -87,6 +114,8 @@ public class LeaveActivity extends AppCompatActivity {
         setUpStartDate();
         setUpEndDate();
         calNoofDays();
+        clickLeave();
+        clickClear();
     }
 
     private void setupChart() {
@@ -113,7 +142,7 @@ public class LeaveActivity extends AppCompatActivity {
 
     private void setUpStartDate() {
         //Begindate
-        beginDate = (EditText) findViewById(R.id.txtBeginDate);
+        beginDate = (EditText) findViewById(R.id.txtLeaveBeginDate);
         beginDate.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -145,7 +174,7 @@ public class LeaveActivity extends AppCompatActivity {
 
     private void setUpEndDate() {
         //EndDate
-        endDate = (EditText) findViewById(R.id.txtEndDate);
+        endDate = (EditText) findViewById(R.id.txtLeaveEndDate);
         endDate.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -174,7 +203,6 @@ public class LeaveActivity extends AppCompatActivity {
             }
         };
     }
-
 
     private void calNoofDays() {
 
@@ -217,11 +245,11 @@ public class LeaveActivity extends AppCompatActivity {
 
     public void CalculateDifference(){
         try {
-            numdays = (EditText) findViewById(R.id.txtNoofDays);
+            numdays = (EditText) findViewById(R.id.txtLeaveNoOfDays);
 
-            Date begin = dateFormat.parse(beginD);
+            begin = dateFormat.parse(beginD);
 
-            Date end = dateFormat.parse(endD);
+            end = dateFormat.parse(endD);
             long diff = end.getTime() - begin.getTime();
 
             long seconds = diff / 1000;
@@ -274,10 +302,10 @@ public class LeaveActivity extends AppCompatActivity {
 
     private void setUpLeaveType(){
         ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,LeaveTypeList);
-        final Spinner spinner = (Spinner) findViewById(R.id.spLeaveType);
-        spinner.setAdapter(adapter);
+        spLeaveType = (Spinner) findViewById(R.id.spLeaveType);
+        spLeaveType.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spLeaveType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -290,5 +318,108 @@ public class LeaveActivity extends AppCompatActivity {
         });
     }
 
+    public void getID(){
+        String query = "SELECT MAX(LeaveID) FROM Leave";
+        Statement stmt = null;
+        LeaveID = (EditText) findViewById(R.id.txtLeaveID);
+        try{
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs!=null){
+                while (rs.next()){
+                    int x = Integer.parseInt(rs.getString(""));
+                    x++;
+                    String s = new DecimalFormat("00000").format(x);
+                    LeaveID.setText(s);
+                    LeaveID.setEnabled(false);
+                }
+            }else{
+                String s = "00001";
+                LeaveID.setText(s);
+                LeaveID.setEnabled(false);
+            }
+        }catch (Exception ex){
+
+        }
+    }
+
+    private void clickLeave() {
+        getID();
+        final String[] categoryName = new String[1];
+        /*final Spinner spinner = (Spinner) findViewById(R.id.spLeaveType);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });*/
+
+        Button btnClick = (Button) findViewById(R.id.btnLeaveSave);
+        Reason = (EditText) findViewById(R.id.txtLeaveReason);
+        NoOfDays = (EditText) findViewById(R.id.txtLeaveNoOfDays);
+        btnClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+
+                    String Query = "INSERT INTO Leave(LeaveID,LeaveType,LeaveRDate,LeaveSDate,LeaveEDate,LeaveReason,LeaveState,SystemHelpLeave,EmpID) " +
+                            "VALUES('"+LeaveID.getText()+"','"+spLeaveType.getSelectedItemPosition()+"','"+Today+"','"+beginDate.getText()+"','"+endDate.getText()+"','"+Reason.getText()+"','"+1+"','"+0+"','"+EmpID+"')";
+                    //String Query = "INSERT INTO Leave VALUES('"+LeaveID.getText()+"','2','2017-09-23','2017-09-24','2017-09-25','rehhfhfh','1','0','10')";
+                    Statement stmt = null;
+                    //con = db.getConnection();
+                    stmt = con.createStatement();
+                    Boolean res = stmt.execute(Query);
+
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                    alertDialog2.setTitle("Success");
+                    alertDialog2.setMessage("Your Leave Added Successful");
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+                    getID();
+                    Clean();
+                }catch (Exception ex){
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                    alertDialog2.setTitle("Error");
+                    alertDialog2.setMessage(ex.toString());
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+                }
+            }
+        });
+    }
+
+    public void Clean(){
+        //LeaveID.setText("");
+        Reason.setText("");
+        beginDate.setText("");
+        endDate.setText("");
+        spLeaveType.setSelection(0);
+    }
+
+    private void clickClear(){
+        Button btnClear = (Button) findViewById(R.id.btnLeaveClear);
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getID();
+                Clean();
+            }
+        });
+    }
 
         }

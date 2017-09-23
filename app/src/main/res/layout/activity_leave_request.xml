@@ -54,8 +54,8 @@
                         android:layout_marginRight="10dp"
                         android:ems="10"
                         android:enabled="false"
-                        android:inputType="textPersonName"
-                        android:text="LID00001" />
+                        android:hint="LID00001"
+                        android:inputType="textPersonName" />
 
                     <TextView
                         android:id="@+id/lblLeaveType"
@@ -83,14 +83,14 @@
                         android:text="Reason" />
 
                     <EditText
-                        android:id="@+id/txtReason"
+                        android:id="@+id/txtLeaveReason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:ems="10"
-                        android:inputType="textMultiLine"
-                        android:text="Personal" />
+                        android:hint="Personal"
+                        android:inputType="textMultiLine" />
 
                     <TextView
                         android:id="@+id/lblLeaveStartDate"
@@ -101,7 +101,7 @@
                         android:text="Begin Date" />
 
                     <EditText
-                        android:id="@+id/txtBeginDate"
+                        android:id="@+id/txtLeaveBeginDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -123,7 +123,7 @@
                         android:text="End Date" />
 
                     <EditText
-                        android:id="@+id/txtEndDate"
+                        android:id="@+id/txtLeaveEndDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -145,15 +145,15 @@
                         android:text="No of Days" />
 
                     <EditText
-                        android:id="@+id/txtNoofDays"
+                        android:id="@+id/txtLeaveNoOfDays"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:ems="10"
                         android:enabled="true"
-                        android:inputType="textPersonName"
-                        android:text="0719586458" />
+                        android:hint="5"
+                        android:inputType="textPersonName" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -162,24 +162,24 @@
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/btnSave"
+                            android:id="@+id/btnLeaveSave"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="30dp"
-                            android:layout_marginTop="20dp"
                             android:layout_marginRight="20dp"
+                            android:layout_marginTop="20dp"
                             android:background="@drawable/btn_blue"
                             android:text="REQUEST" />
 
                         <Button
-                            android:id="@+id/btnCancel"
+                            android:id="@+id/btnLeaveClear"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="30dp"
-                            android:layout_marginTop="20dp"
                             android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
                             android:background="@drawable/btn_blue"
-                            android:text="CANCEL" />
+                            android:text="CLEAR" />
                     </LinearLayout>
 
                 </LinearLayout>

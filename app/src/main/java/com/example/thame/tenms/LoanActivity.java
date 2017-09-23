@@ -46,6 +46,8 @@ public class LoanActivity extends AppCompatActivity {
     EditText LoanMRemain;
     EditText LoanMReduction;
 
+    String EmpID;
+
     //String dataList[] = new String[]{"","","","","","","","","",""};
     ArrayList<String> dataList = new ArrayList<String>();
 
@@ -74,6 +76,7 @@ public class LoanActivity extends AppCompatActivity {
         LoanMReduction = (EditText) findViewById(R.id.txtLoanMonthlyReduction);
 
         con = db.getConnection();
+        EmpID = ((Global)this.getApplication()).getEmpID();
         setupLoan();
 
 
@@ -85,7 +88,7 @@ public class LoanActivity extends AppCompatActivity {
 
         try {
             // Change below query according to your own database.
-            String query = "SELECT LoanID,ProposedAmount FROM Loan";
+            String query = "SELECT LoanID,ProposedAmount FROM Loan WHERE EmpID='"+EmpID+"'";
             Statement stmt2 = con.createStatement();
             rs = stmt2.executeQuery(query);
             int arrayValue = 0;

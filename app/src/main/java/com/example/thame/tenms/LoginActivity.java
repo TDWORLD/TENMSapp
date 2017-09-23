@@ -120,6 +120,8 @@ public class LoginActivity extends AppCompatActivity {
                     ResultSet rs = stmt.executeQuery(query);
                     if (rs.next()){
                         con.close();
+                        ((Global)this.getApplication()).setUserName(usernam.toString());
+                        ((Global)this.getApplication()).setEmpID(rs.getString("EmpID"));
                         Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                         //proLogin.setVisibility(View.INVISIBLE);
                         startActivity(intent);
