@@ -103,7 +103,6 @@ public class EmployeeActivity extends AppCompatActivity {
                         LName.setText(rs.getString("EmpLName"));
                         Address1.setText(rs.getString("EmpAddress1"));
                         Address2.setText(rs.getString("EmpAddress2"));
-                        String gender = rs.getString("EmpGender");
                         Gender.setText("Male");
                         TPHome.setText(rs.getString("EmpTeleH"));
                         TPMobile.setText(rs.getString("EmpTeleM"));
