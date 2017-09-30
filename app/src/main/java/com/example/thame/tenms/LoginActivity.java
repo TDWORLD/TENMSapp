@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         actionbar.setTitle("  Login");
 
         forgetPass = (TextView) findViewById(R.id.txtForgetPass);
-        company = (EditText) findViewById(R.id.txtCompany);
+        //company = (EditText) findViewById(R.id.txtCompany);
         uname = (EditText) findViewById(R.id.txtUname);
         pword = (EditText) findViewById(R.id.txtPword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -87,9 +87,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (TextUtils.isEmpty(company.getText().toString())) {
+                /* if (TextUtils.isEmpty(company.getText().toString())) {
                     company.setError("Please enter the company id");
-                } else if (TextUtils.isEmpty(uname.getText().toString())) {
+                } else */
+
+                if (TextUtils.isEmpty(uname.getText().toString())) {
                     uname.setError("Please enter the username");
                 } else if (TextUtils.isEmpty(pword.getText().toString())) {
                     pword.setError("Please enter the password");

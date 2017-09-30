@@ -12,6 +12,7 @@ public class Global extends Application{
 
     private String UserName;
     private String EmpID;
+    private String ResetPin;
 
     public String getUserName() {
         return UserName;
@@ -28,5 +29,13 @@ public class Global extends Application{
 
     public void setEmpID(String EmpID) {
         this.EmpID = EmpID;
+    }
+
+    public String getResetPin() {
+        return ResetPin;
+    }
+
+    public void setResetPin(String ResetPin) {
+        this.ResetPin = ResetPin;
     }
 }
