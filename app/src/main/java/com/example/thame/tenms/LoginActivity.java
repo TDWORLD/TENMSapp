@@ -73,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
         uname = (EditText) findViewById(R.id.txtUname);
         pword = (EditText) findViewById(R.id.txtPword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
-        checkRemember = (CheckBox) findViewById(R.id.checkRemember);
         proLogin = (ProgressBar) findViewById(R.id.proLogin);
         proLogin.setVisibility(View.INVISIBLE);
 
