@@ -101,15 +101,17 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     public void getData(String EmpID,String UserName){
         ResultSet rs;
         try{
-            //String query = "SELECT EmpID FROM tbl_User WHERE UsernameA='"+UserName+"'";
+            Pin = ((Global)this.getApplication()).getResetPin();
             String query2 = "SELECT * FROM Employee WHERE EmpID=(SELECT EmpID FROM tbl_User WHERE UsernameA='"+UserName+"')";
             Statement stmt2 = con.createStatement();
             rs = stmt2.executeQuery(query2);
             if(rs!=null){
-                String teleNo = "+94"+rs.getString("EmpTeleM");
+                while (rs.next()){
+                    String teleNo = "+94"+rs.getString("EmpTeleM");
+                    sendSMS(teleNo,Pin);
+                }
             }
 
-            //sendSMS(teleNo,Pin);
         }
         catch(Exception ex){
             AlertDialog alertDialog2 = new AlertDialog.Builder(ForgotPasswordActivity.this).create();
