@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -27,7 +28,7 @@ public class EmployeeActivity extends AppCompatActivity {
     EditText LName;
     EditText Address1;
     EditText Address2;
-    EditText Gender;
+    Spinner Gender;
     EditText TPHome;
     EditText TPMobile;
     EditText EmpNIC;
@@ -35,6 +36,8 @@ public class EmployeeActivity extends AppCompatActivity {
     Button Save;
     Button Cancel;
     int gnder;
+
+    String genderList[] = new String[]{"-Select-","Male","Female"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class EmployeeActivity extends AppCompatActivity {
         LName = (EditText) findViewById(R.id.txtSName);
         Address1 = (EditText) findViewById(R.id.txtAddress1);
         Address2 = (EditText) findViewById(R.id.txtAddress2);
-        Gender = (EditText) findViewById(R.id.txtAddress3);
+        Gender = (Spinner) findViewById(R.id.spGender);
         TPHome = (EditText) findViewById(R.id.txtTPHome);
         TPMobile = (EditText) findViewById(R.id.txtTPMobile);
         EmpNIC = (EditText) findViewById(R.id.txtEmail);
@@ -86,6 +89,8 @@ public class EmployeeActivity extends AppCompatActivity {
 
     public void setupEmployee(){
         String empid=((Global)this.getApplication()).getEmpID();
+        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,genderList);
+        Gender.setAdapter(adapter);
 
         ResultSet rs,rs3;
         try {
@@ -103,7 +108,7 @@ public class EmployeeActivity extends AppCompatActivity {
                         LName.setText(rs.getString("EmpLName"));
                         Address1.setText(rs.getString("EmpAddress1"));
                         Address2.setText(rs.getString("EmpAddress2"));
-                        Gender.setText("Male");
+                        Gender.setSelection(rs.getInt("EmpGender"));
                         TPHome.setText(rs.getString("EmpTeleH"));
                         TPMobile.setText(rs.getString("EmpTeleM"));
                         EmpNIC.setText(rs.getString("EmpNic"));
@@ -156,7 +161,7 @@ public class EmployeeActivity extends AppCompatActivity {
 
     public void updateEmployee(){
         try{
-            String Query = "UPDATE Employee SET EmpAddress1='"+Address1.getText()+"', EmpAddress2='"+Address2.getText()+"', EmpGender='"+1+"', EmpTeleH='"+TPHome.getText()+"', EmpTeleM='"+TPMobile.getText()+"', EmpNIC='"+EmpNIC.getText()+"', EmpDob='"+EmpDOB.getText()+"' WHERE EmpID='"+EmpID.getText()+"'";
+            String Query = "UPDATE Employee SET EmpAddress1='"+Address1.getText()+"', EmpAddress2='"+Address2.getText()+"', EmpGender='"+Gender.getSelectedItemPosition()+"', EmpTeleH='"+TPHome.getText()+"', EmpTeleM='"+TPMobile.getText()+"', EmpNIC='"+EmpNIC.getText()+"', EmpDob='"+EmpDOB.getText()+"' WHERE EmpID='"+EmpID.getText()+"'";
             Statement stmt = null;
             stmt = con.createStatement();
             Boolean res = stmt.execute(Query);

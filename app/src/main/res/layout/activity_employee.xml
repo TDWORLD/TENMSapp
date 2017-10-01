@@ -184,15 +184,12 @@
                                 android:layout_marginTop="10dp"
                                 android:text="Gender :" />
 
-                            <EditText
-                                android:id="@+id/txtAddress3"
+                            <Spinner
+                                android:id="@+id/spGender"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:ems="10"
-                                android:enabled="true"
-                                android:inputType="textPersonName" />
+                                android:layout_marginRight="10dp"/>
 
                             <TextView
                                 android:id="@+id/lbltp"
