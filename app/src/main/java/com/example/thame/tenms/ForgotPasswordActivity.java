@@ -56,7 +56,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         }catch (Exception ex){
             AlertDialog alertDialog = new AlertDialog.Builder(ForgotPasswordActivity.this).create();
             alertDialog.setTitle("Error");
-            alertDialog.setMessage("Problem occured"+ex.getMessage());
+            alertDialog.setMessage("Connection error. Please check your internet connection and try again later.");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -116,8 +116,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         catch(Exception ex){
             AlertDialog alertDialog2 = new AlertDialog.Builder(ForgotPasswordActivity.this).create();
             alertDialog2.setTitle("Invalid");
-            //alertDialog2.setMessage("The username you have entered in not valid. Please enter a valid username to reset the password.");
-            alertDialog2.setMessage(ex.getMessage().toString());
+            alertDialog2.setMessage("The username you have entered in not valid. Please enter a valid username to reset the password.");
             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -135,16 +134,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             String messageToSend = "Your password resetting code is : "+pin;
 
             SmsManager.getDefault().sendTextMessage(teleNo, null, messageToSend, null, null);
-            AlertDialog alertDialog = new AlertDialog.Builder(ForgotPasswordActivity.this).create();
-            alertDialog.setTitle("Successful");
-            alertDialog.setMessage("Pin code sent successfully to your phone");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
+
+            Toast.makeText(ForgotPasswordActivity.this, "Pin code sent successfully to your phone", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(ForgotPasswordActivity.this,ChangePasswordActivity.class);
             startActivity(intent);
@@ -153,7 +144,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         {
             AlertDialog alertDialog = new AlertDialog.Builder(ForgotPasswordActivity.this).create();
             alertDialog.setTitle("Error");
-            alertDialog.setMessage("Problem occured"+e.getMessage());
+            alertDialog.setMessage("Error occured while resetting the password. Please try again later.");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {

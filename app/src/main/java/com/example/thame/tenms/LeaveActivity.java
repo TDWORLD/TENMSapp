@@ -304,7 +304,7 @@ public class LeaveActivity extends AppCompatActivity {
                     }catch (Exception ex){
                         AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
                         alertDialog2.setTitle("Error");
-                        alertDialog2.setMessage("No Leave Data: "+ex.toString());
+                        alertDialog2.setMessage("Error occured while loading data");
                         alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -317,8 +317,8 @@ public class LeaveActivity extends AppCompatActivity {
 
                 } else {
                     AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
-                    alertDialog2.setTitle("Invalid");
-                    alertDialog2.setMessage("Invalid query");
+                    alertDialog2.setTitle("Error");
+                    alertDialog2.setMessage("Error in database. Please try again later.");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -452,7 +452,7 @@ public class LeaveActivity extends AppCompatActivity {
 
                     AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
                     alertDialog2.setTitle("Success");
-                    alertDialog2.setMessage("Your Leave Added Successful");
+                    alertDialog2.setMessage("Your Leave Added Successfully");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -465,7 +465,7 @@ public class LeaveActivity extends AppCompatActivity {
                 }catch (Exception ex){
                     AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
                     alertDialog2.setTitle("Error");
-                    alertDialog2.setMessage(ex.toString());
+                    alertDialog2.setMessage("Error occured while adding leaves to the system.");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -554,7 +554,7 @@ public class LeaveActivity extends AppCompatActivity {
                         }catch (Exception ex){
                             AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
                             alertDialog2.setTitle("Error");
-                            alertDialog2.setMessage("No Performance Data: "+ex.toString());
+                            alertDialog2.setMessage("Error while loading data. Please try again later.");
                             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
@@ -567,8 +567,8 @@ public class LeaveActivity extends AppCompatActivity {
 
                     } else {
                         AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
-                        alertDialog2.setTitle("Invalid");
-                        alertDialog2.setMessage("Invalid query");
+                        alertDialog2.setTitle("Error");
+                        alertDialog2.setMessage("Error while loading data. Please try again later.");
                         alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {

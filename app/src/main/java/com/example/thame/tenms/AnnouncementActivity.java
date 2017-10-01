@@ -170,7 +170,7 @@ public class AnnouncementActivity extends AppCompatActivity {
                 }catch (Exception ex){
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                     alertDialog2.setTitle("Error");
-                    alertDialog2.setMessage("Error: "+ex.toString());
+                    alertDialog2.setMessage("Error while loading complain data");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -183,8 +183,8 @@ public class AnnouncementActivity extends AppCompatActivity {
 
             } else {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                alertDialog2.setTitle("Invalid");
-                alertDialog2.setMessage("Invalid query");
+                alertDialog2.setTitle("Error");
+                alertDialog2.setMessage("Error while loading complain data");
                 alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -226,8 +226,8 @@ public class AnnouncementActivity extends AppCompatActivity {
                             complainState.setText(rs.getString("ComplainState"));
                         }catch (Exception ex){
                             AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                            alertDialog2.setTitle("Error here");
-                            alertDialog2.setMessage("Error: "+ex.toString());
+                            alertDialog2.setTitle("Error");
+                            alertDialog2.setMessage("Can't load the complain state. Please try again later.");
                             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
@@ -240,8 +240,8 @@ public class AnnouncementActivity extends AppCompatActivity {
 
                     } else {
                         AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                        alertDialog2.setTitle("Invalid");
-                        alertDialog2.setMessage("No values found");
+                        alertDialog2.setTitle("Error");
+                        alertDialog2.setMessage("No values found in the database");
                         alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -252,7 +252,7 @@ public class AnnouncementActivity extends AppCompatActivity {
                     }
                 } catch (Exception ex) {
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                    alertDialog2.setTitle("Connection error");
+                    alertDialog2.setTitle("Error");
                     alertDialog2.setMessage("Please check your internet connection");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
@@ -316,7 +316,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
         if (con == null) {
             AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-            alertDialog2.setTitle("Connection error");
+            alertDialog2.setTitle("Error");
             alertDialog2.setMessage("Check your internet access");
             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                     new DialogInterface.OnClickListener() {
@@ -346,7 +346,7 @@ public class AnnouncementActivity extends AppCompatActivity {
                     }catch (Exception ex){
                         AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                         alertDialog2.setTitle("Error");
-                        alertDialog2.setMessage("Error: "+ex.toString());
+                        alertDialog2.setMessage("Error occured while loading data. Please try again later");
                         alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -359,8 +359,8 @@ public class AnnouncementActivity extends AppCompatActivity {
 
                 } else {
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                    alertDialog2.setTitle("Invalid");
-                    alertDialog2.setMessage("Invalid query");
+                    alertDialog2.setTitle("Error");
+                    alertDialog2.setMessage("No values found in the database");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -371,7 +371,7 @@ public class AnnouncementActivity extends AppCompatActivity {
                 }
             } catch (Exception ex) {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                alertDialog2.setTitle("Connection error");
+                alertDialog2.setTitle("Error");
                 alertDialog2.setMessage("Please check your internet connection");
                 alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
@@ -429,7 +429,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                     alertDialog2.setTitle("Success");
-                    alertDialog2.setMessage("Your Complain Added Successfully");
+                    alertDialog2.setMessage("Your complain added successfully to the system.");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -442,7 +442,7 @@ public class AnnouncementActivity extends AppCompatActivity {
                 }catch (Exception ex){
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
                     alertDialog2.setTitle("Error");
-                    alertDialog2.setMessage("Somethings Wrong");
+                    alertDialog2.setMessage("Error occured while inserting data to the database");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -489,7 +489,7 @@ public class AnnouncementActivity extends AppCompatActivity {
         }catch (Exception ex){
             AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
             alertDialog2.setTitle("Error");
-            alertDialog2.setMessage(ex.toString());
+            alertDialog2.setMessage("Error occured while loading data");
             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {

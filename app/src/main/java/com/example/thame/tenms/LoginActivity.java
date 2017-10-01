@@ -147,8 +147,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 AlertDialog errorDialog = new AlertDialog.Builder(LoginActivity.this).create();
                 errorDialog.setTitle("Connection error");
-                //errorDialog.setMessage("Check your internet access");
-                errorDialog.setMessage(ex.toString());
+                errorDialog.setMessage("Check your internet access");
+                //errorDialog.setMessage(ex.toString());
                 errorDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

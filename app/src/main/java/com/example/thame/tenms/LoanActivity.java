@@ -105,7 +105,7 @@ public class LoanActivity extends AppCompatActivity {
                 }catch (Exception ex){
                     AlertDialog alertDialog2 = new AlertDialog.Builder(LoanActivity.this).create();
                     alertDialog2.setTitle("Error");
-                    alertDialog2.setMessage("Error: "+ex.toString());
+                    alertDialog2.setMessage("Error while loading data. Please try again later.");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -119,8 +119,8 @@ public class LoanActivity extends AppCompatActivity {
             }
             else {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(LoanActivity.this).create();
-                alertDialog2.setTitle("Invalid");
-                alertDialog2.setMessage("Invalid query");
+                alertDialog2.setTitle("Error");
+                alertDialog2.setMessage("Error while loading data. Please try again later.");
                 alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -132,7 +132,7 @@ public class LoanActivity extends AppCompatActivity {
         } catch (Exception ex) {
             AlertDialog alertDialog2 = new AlertDialog.Builder(LoanActivity.this).create();
             alertDialog2.setTitle("Connection error");
-            alertDialog2.setMessage(ex.toString());
+            alertDialog2.setMessage("There is a problem in your internet connection. Please check it and try again later.");
             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -191,7 +191,7 @@ public class LoanActivity extends AppCompatActivity {
                 }catch (Exception ex){
                     AlertDialog alertDialog2 = new AlertDialog.Builder(LoanActivity.this).create();
                     alertDialog2.setTitle("Error");
-                    alertDialog2.setMessage("Error: "+ex.toString());
+                    alertDialog2.setMessage("Error while loading data. Please try again later.");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -205,8 +205,8 @@ public class LoanActivity extends AppCompatActivity {
             }
             else {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(LoanActivity.this).create();
-                alertDialog2.setTitle("Invalid");
-                alertDialog2.setMessage("Invalid query");
+                alertDialog2.setTitle("Error");
+                alertDialog2.setMessage("Error while loading data. Please try again later.");
                 alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -218,7 +218,7 @@ public class LoanActivity extends AppCompatActivity {
         } catch (Exception ex) {
             AlertDialog alertDialog2 = new AlertDialog.Builder(LoanActivity.this).create();
             alertDialog2.setTitle("Connection error");
-            alertDialog2.setMessage(ex.toString());
+            alertDialog2.setMessage("There is a problem in your internet connection. Please check it and try again later.");
             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {

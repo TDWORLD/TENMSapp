@@ -41,7 +41,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }catch (Exception ex){
             AlertDialog alertDialog = new AlertDialog.Builder(ChangePasswordActivity.this).create();
             alertDialog.setTitle("Error");
-            alertDialog.setMessage("Problem occured"+ex.getMessage());
+            alertDialog.setMessage("Error in the connection. Please try again later");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -85,21 +85,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         String un=((Global)this.getApplication()).getUserName();
 
         if (NewPassword.getText().toString().equals(NewPassword2.getText().toString())){
-            //if (NewPassword.getText().toString().equals("NULL")||NewPassword2.getText().toString().equals("NULL")||NewPassword.getText().toString().equals("")||NewPassword2.getText().toString().equals("")){
-                setPwd(un);
-            //}
-            //else{
-                /*AlertDialog alertDialog = new AlertDialog.Builder(ChangePasswordActivity.this).create();
-                alertDialog.setTitle("Error");
-                alertDialog.setMessage("Please enter a new password to continue");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();*/
-            //}
+            setPwd(un);
         }
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(ChangePasswordActivity.this).create();
@@ -129,7 +115,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             if (res=true){
                 AlertDialog alertDialog = new AlertDialog.Builder(ChangePasswordActivity.this).create();
                 alertDialog.setTitle("Success");
-                alertDialog.setMessage("Password resetted successfully");
+                alertDialog.setMessage("Password changed successfully");
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -143,7 +129,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             else{
                 AlertDialog alertDialog = new AlertDialog.Builder(ChangePasswordActivity.this).create();
                 alertDialog.setTitle("Error");
-                alertDialog.setMessage("Error occured when resetting the password");
+                alertDialog.setMessage("Error occured while changing the password");
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -157,7 +143,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         catch(Exception ex){
             AlertDialog alertDialog = new AlertDialog.Builder(ChangePasswordActivity.this).create();
             alertDialog.setTitle("Error");
-            alertDialog.setMessage("Problem occured"+ex.getMessage());
+            alertDialog.setMessage("Error occured while updating the database");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {

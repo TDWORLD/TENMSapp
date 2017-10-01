@@ -98,7 +98,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
         if (con == null) {
             AlertDialog alertDialog2 = new AlertDialog.Builder(AttendanceActivity.this).create();
-            alertDialog2.setTitle("Connection error");
+            alertDialog2.setTitle("Error");
             alertDialog2.setMessage("Check your internet access");
             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                     new DialogInterface.OnClickListener() {
@@ -125,7 +125,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     }catch (Exception ex){
                         AlertDialog alertDialog2 = new AlertDialog.Builder(AttendanceActivity.this).create();
                         alertDialog2.setTitle("Error");
-                        alertDialog2.setMessage("No Leave Data: "+ex.toString());
+                        alertDialog2.setMessage("Error while loading data");
                         alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -138,8 +138,8 @@ public class AttendanceActivity extends AppCompatActivity {
 
                 } else {
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AttendanceActivity.this).create();
-                    alertDialog2.setTitle("Invalid");
-                    alertDialog2.setMessage("Invalid query");
+                    alertDialog2.setTitle("Error");
+                    alertDialog2.setMessage("Error while loading data");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -150,7 +150,7 @@ public class AttendanceActivity extends AppCompatActivity {
                 }
             } catch (Exception ex) {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(AttendanceActivity.this).create();
-                alertDialog2.setTitle("Connection error");
+                alertDialog2.setTitle("Error");
                 alertDialog2.setMessage("Please check your internet connection");
                 alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
@@ -204,7 +204,7 @@ public class AttendanceActivity extends AppCompatActivity {
             int fromSPmonth = spMonth.getSelectedItemPosition()+1;
             if (con == null) {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(AttendanceActivity.this).create();
-                alertDialog2.setTitle("Connection error");
+                alertDialog2.setTitle("Error");
                 alertDialog2.setMessage("Check your internet access");
                 alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
@@ -240,7 +240,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         }catch (Exception ex){
                             AlertDialog alertDialog2 = new AlertDialog.Builder(AttendanceActivity.this).create();
                             alertDialog2.setTitle("Error");
-                            alertDialog2.setMessage("No Performance Data: "+ex.toString());
+                            alertDialog2.setMessage("Error while loading data");
                             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
@@ -253,8 +253,8 @@ public class AttendanceActivity extends AppCompatActivity {
 
                     } else {
                         AlertDialog alertDialog2 = new AlertDialog.Builder(AttendanceActivity.this).create();
-                        alertDialog2.setTitle("Invalid");
-                        alertDialog2.setMessage("Invalid query");
+                        alertDialog2.setTitle("Error");
+                        alertDialog2.setMessage("Error while loading data");
                         alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -265,7 +265,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     }
                 } catch (Exception ex) {
                     AlertDialog alertDialog2 = new AlertDialog.Builder(AttendanceActivity.this).create();
-                    alertDialog2.setTitle("Connection error");
+                    alertDialog2.setTitle("Error");
                     alertDialog2.setMessage("Please check your internet connection");
                     alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                             new DialogInterface.OnClickListener() {
