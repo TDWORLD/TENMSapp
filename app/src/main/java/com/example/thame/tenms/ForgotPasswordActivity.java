@@ -46,14 +46,34 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         actionbar.setDisplayShowHomeEnabled(true);
         actionbar.setTitle("  Password Reset");
 
-        EmpID = ((Global)this.getApplication()).getEmpID();
-        UserName = ((Global)this.getApplication()).getUserName();
+        db = new DataAccess();
+
+        txtEmpID = (EditText) findViewById(R.id.txtFPEmpID);
+
         Pin = ((Global)this.getApplication()).getResetPin();
+        try{
+            con = db.getConnection();
+        }catch (Exception ex){
+            AlertDialog alertDialog = new AlertDialog.Builder(ForgotPasswordActivity.this).create();
+            alertDialog.setTitle("Error");
+            alertDialog.setMessage("Problem occured"+ex.getMessage());
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
 
-        getData(EmpID,UserName);
-        PassReset();
 
-        con = db.getConnection();
+        Button btnReset = (Button) findViewById(R.id.btnReset);
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setPin();
+            }
+        });
     }
 
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -82,16 +102,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ResultSet rs;
         try{
             //String query = "SELECT EmpID FROM tbl_User WHERE UsernameA='"+UserName+"'";
-            String query2 = "SELECT EmpTeleM FROM Employee WHERE EmpID='(SELECT EmpID FROM tbl_User WHERE UsernameA='"+UserName+"')'";
+            String query2 = "SELECT * FROM Employee WHERE EmpID=(SELECT EmpID FROM tbl_User WHERE UsernameA='"+UserName+"')";
             Statement stmt2 = con.createStatement();
             rs = stmt2.executeQuery(query2);
-            String teleNo = "+94"+rs.getString("EmpTeleM");
-            sendSMS(teleNo,Pin);
+            if(rs!=null){
+                String teleNo = "+94"+rs.getString("EmpTeleM");
+            }
+
+            //sendSMS(teleNo,Pin);
         }
         catch(Exception ex){
             AlertDialog alertDialog2 = new AlertDialog.Builder(ForgotPasswordActivity.this).create();
             alertDialog2.setTitle("Invalid");
-            alertDialog2.setMessage("The username you have entered in not valid. Please enter a valid username to reset the password.");
+            //alertDialog2.setMessage("The username you have entered in not valid. Please enter a valid username to reset the password.");
+            alertDialog2.setMessage(ex.getMessage().toString());
             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -119,6 +143,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         }
                     });
             alertDialog.show();
+
+            Intent intent = new Intent(ForgotPasswordActivity.this,ChangePasswordActivity.class);
+            startActivity(intent);
         }
         catch (Exception e)
         {
@@ -139,17 +166,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         txtEmpID = (EditText) findViewById(R.id.txtFPEmpID);
         txtUserName = (EditText) findViewById(R.id.txtFPUsername);
 
-        Button btnClick = (Button) findViewById(R.id.btnLeaveSave);
-        btnClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        EmpID = txtEmpID.getText().toString();
+        UserName = txtUserName.getText().toString();
 
-
-
-
-
-            }
-        });
+        getData(EmpID,UserName);
     }
 
     public void setPin(){
@@ -157,5 +177,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         int num = random.nextInt(100000);
         String formatted = String.format("%05d", num);
         ((Global)this.getApplication()).setResetPin(formatted);
+
+        PassReset();
     }
 }
