@@ -117,13 +117,14 @@ public class LeaveActivity extends AppCompatActivity {
         setUpYear();
         setUpMonth();
         setUpLeaveType();
-        //setupChart();
+        setupChart();
         setUpStartDate();
         setUpEndDate();
         calNoofDays();
         clickLeave();
         clickClear();
         loadChart();
+        getID();
     }
 
     private void setupChart() {
@@ -498,88 +499,13 @@ public class LeaveActivity extends AppCompatActivity {
 
     public void loadChart(){
 
-        int fromSPyear = Integer.parseInt(spYear.getSelectedItem().toString());
-        int fromSPmonth = spMonth.getSelectedItemPosition()+1;
-
-        if (con == null) {
-            AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
-            alertDialog2.setTitle("Connection error");
-            alertDialog2.setMessage("Check your internet access");
-            alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog2.show();
-        }else{
-            try {
-                // Change below query according to your own database.
-                String query = "SELECT * FROM Leave WHERE EmpID = '"+EmpID+"'";
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
-                int Approved = 0;
-                int Rejected = 0;
-                int Pending = 0;
-                int LeaveLeft = 0;
-
-
-                if (rs!=null) {
-                    try{
-                        while(rs.next()){
-                            Date date = rs.getDate("LeaveSdate");
-                            Calendar cal=Calendar.getInstance();
-                            cal.setTime(date);
-                            int year = cal.get(Calendar.YEAR);
-                            int month = cal.get(Calendar.MONTH)+1;
-                            if(year==fromSPyear && month==fromSPmonth){
-                                String state = rs.getString("LeaveState");
-                                if(state.equals("1")){
-                                    Pending++;
-                                }else if (state.equals("2")){
-                                    Approved++;
-                                }else if (state.equals("3")){
-                                    Rejected++;
-                                }
-                            }
-                        }
-                        TotalDays = Integer.toString(Pending + Approved + Rejected);
-                        charValue[0] = Approved;
-                        charValue[1] = Rejected;
-                        charValue[2] = Pending;
-                        charValue[3] = LeaveLeft;
-                        setupChart();
-
-                    }catch (Exception ex){
-                        AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
-                        alertDialog2.setTitle("Error");
-                        alertDialog2.setMessage("No Performance Data: "+ex.toString());
-                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        alertDialog2.show();
-
-                    }
-
-                } else {
-                    AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
-                    alertDialog2.setTitle("Invalid");
-                    alertDialog2.setMessage("Invalid query");
-                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog2.show();
-                }
-            } catch (Exception ex) {
+        try{
+            int fromSPyear = Integer.parseInt(spYear.getSelectedItem().toString());
+            int fromSPmonth = spMonth.getSelectedItemPosition()+1;
+            if (con == null) {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
                 alertDialog2.setTitle("Connection error");
-                alertDialog2.setMessage("Please check your internet connection");
+                alertDialog2.setMessage("Check your internet access");
                 alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -587,9 +513,88 @@ public class LeaveActivity extends AppCompatActivity {
                             }
                         });
                 alertDialog2.show();
+            }else{
+                try {
+                    // Change below query according to your own database.
+                    String query = "SELECT * FROM Leave WHERE EmpID = '"+EmpID+"'";
+                    Statement stmt = con.createStatement();
+                    ResultSet rs = stmt.executeQuery(query);
+                    int Approved = 0;
+                    int Rejected = 0;
+                    int Pending = 0;
+                    int LeaveLeft = 0;
 
+
+                    if (rs!=null) {
+                        try{
+                            while(rs.next()){
+                                Date date = rs.getDate("LeaveSdate");
+                                Calendar cal=Calendar.getInstance();
+                                cal.setTime(date);
+                                int year = cal.get(Calendar.YEAR);
+                                int month = cal.get(Calendar.MONTH)+1;
+                                if(year==fromSPyear && month==fromSPmonth){
+                                    String state = rs.getString("LeaveState");
+                                    if(state.equals("1")){
+                                        Pending++;
+                                    }else if (state.equals("2")){
+                                        Approved++;
+                                    }else if (state.equals("3")){
+                                        Rejected++;
+                                    }
+                                }
+                            }
+                            TotalDays = Integer.toString(Pending + Approved + Rejected);
+                            charValue[0] = Approved;
+                            charValue[1] = Rejected;
+                            charValue[2] = Pending;
+                            charValue[3] = LeaveLeft;
+                            setupChart();
+
+                        }catch (Exception ex){
+                            AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                            alertDialog2.setTitle("Error");
+                            alertDialog2.setMessage("No Performance Data: "+ex.toString());
+                            alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog2.show();
+
+                        }
+
+                    } else {
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                        alertDialog2.setTitle("Invalid");
+                        alertDialog2.setMessage("Invalid query");
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog2.show();
+                    }
+                } catch (Exception ex) {
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                    alertDialog2.setTitle("Connection error");
+                    alertDialog2.setMessage("Please check your internet connection");
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+
+                }
             }
+        }catch (Exception ex){
+
         }
-    }
+
+    } //New Edited
 
 }

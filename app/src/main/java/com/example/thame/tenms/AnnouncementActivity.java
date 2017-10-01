@@ -109,6 +109,7 @@ public class AnnouncementActivity extends AppCompatActivity {
         setUpAnnounce();
         clickComplain();
         clickClear();
+        getID();
 
     }
 
@@ -214,9 +215,9 @@ public class AnnouncementActivity extends AppCompatActivity {
                 complainState = (EditText)findViewById(R.id.txtComplainState);
                 try {
                     String complain = spinner2.getSelectedItem().toString();
-                    String complain2 = complain.substring(0,7);
+                    String complain2[] = complain.split(" - ");
                     // Change below query according to your own database.
-                    String query = "SELECT * FROM Complain WHERE ComplainID = '"+complain2+"'";
+                    String query = "SELECT * FROM Complain WHERE ComplainID = '"+complain2[0]+"'";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
 
@@ -398,7 +399,6 @@ public class AnnouncementActivity extends AppCompatActivity {
     }
 
     private void clickComplain() {
-        getID();
         final String[] categoryName = new String[1];
         //btnComplain = (Button)findViewById(R.id.btnComplainSave);
         final Spinner spinner = (Spinner) findViewById(R.id.complainType);
@@ -421,8 +421,7 @@ public class AnnouncementActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try{
-
-                    String Query = "INSERT INTO Complain(ComplainID,ComplainTitle,ComplainBody,ComplainCategory,ComplainDate,ComplainState) VALUES('"+txtComplainID.getText()+"','"+txtComplainTitle.getText()+"','"+spComplainType.getSelectedItem()+"','"+txtComplain.getText()+"','"+cDate.getText()+"','Open')";
+                    String Query = "INSERT INTO Complain(ComplainID,ComplainTitle,ComplainBody,ComplainCategory,ComplainDate,ComplainState) VALUES('"+txtComplainID.getText()+"','"+txtComplainTitle.getText()+"','"+txtComplain.getText()+"','"+spComplainType.getSelectedItem()+"','"+cDate.getText()+"','Open')";
                     //String Query = "INSERT INTO Complain VALUES('kkkkk','bbbbb','lllll','fgdfgfdg','2017-05-25','Open')";
                     Statement stmt = null;
                     stmt = con.createStatement();
@@ -468,7 +467,7 @@ public class AnnouncementActivity extends AppCompatActivity {
     }
 
     public void getID(){
-        String query = "SELECT MAX(ComplainID) FROM Complain";
+        String query = "SELECT MAX(ComplainID) AS ComplainID FROM Complain";
         Statement stmt = null;
         txtComplainID = (EditText) findViewById(R.id.txtComplainID);
         try{
@@ -476,19 +475,28 @@ public class AnnouncementActivity extends AppCompatActivity {
             ResultSet rs = stmt.executeQuery(query);
             if (rs!=null){
                 while (rs.next()){
-                    int x = Integer.parseInt(rs.getString("").substring(3));
+                    int x = rs.getInt("ComplainID");
                     x++;
-                    String s = "COM"+new DecimalFormat("0000").format(x);
+                    String s = new DecimalFormat("0000").format(x);
                     txtComplainID.setText(s);
                     txtComplainID.setEnabled(false);
                 }
             }else{
-                String s = "COM0001";
+                String s = "0001";
                 txtComplainID.setText(s);
                 txtComplainID.setEnabled(false);
             }
         }catch (Exception ex){
-
+            AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+            alertDialog2.setTitle("Error");
+            alertDialog2.setMessage(ex.toString());
+            alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog2.show();
         }
     }
 

@@ -54,7 +54,7 @@
                         android:layout_marginRight="10dp"
                         android:ems="10"
                         android:enabled="false"
-                        android:hint="LID00001"
+                        android:hint="0001"
                         android:inputType="textPersonName" />
 
                     <TextView
