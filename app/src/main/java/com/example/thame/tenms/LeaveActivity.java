@@ -59,7 +59,7 @@ public class LeaveActivity extends AppCompatActivity {
     Date begin;
     Date end;
 
-    String YearList[] = new String[]{"2013","2014","2015","2016","2017"};
+    ArrayList<String> YearList = new ArrayList<String>();//New Edited
     String MonthList[] = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
     String LeaveTypeList[] = new String[]{"-Select-","Full Day","Half Day","Short Leave","No Pay"};
 
@@ -77,6 +77,10 @@ public class LeaveActivity extends AppCompatActivity {
 
     Date date = new Date();
     String Today = dateFormat.format(date).toString();
+
+    //New Edited
+    Spinner spYear;
+    Spinner spMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,15 +111,19 @@ public class LeaveActivity extends AppCompatActivity {
         spec2.setContent(R.id.layoutRequest);
         tab.addTab(spec2);
 
+        spYear = (Spinner) findViewById(R.id.leaveYear);//New Edited
+        spMonth = (Spinner) findViewById(R.id.leaveMonth);//New Edited
+
         setUpYear();
         setUpMonth();
         setUpLeaveType();
-        setupChart();
+        //setupChart();
         setUpStartDate();
         setUpEndDate();
         calNoofDays();
         clickLeave();
         clickClear();
+        loadChart();
     }
 
     private void setupChart() {
@@ -265,11 +273,78 @@ public class LeaveActivity extends AppCompatActivity {
     }
 
     private void setUpYear(){
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,YearList);
-        final Spinner spinner = (Spinner) findViewById(R.id.leaveYear);
-        spinner.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        if (con == null) {
+            AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+            alertDialog2.setTitle("Connection error");
+            alertDialog2.setMessage("Check your internet access");
+            alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog2.show();
+        }else{
+            try {
+                // Change below query according to your own database.
+                String query = "SELECT DISTINCT TOP 10 datepart(yyyy,LeaveSdate) AS onlyYear FROM Leave ORDER BY onlyYear DESC";
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                int arrayValue = 0;
+
+                if (rs!=null) {
+                    try{
+                        while(rs.next()){
+                            String year = rs.getString("onlyYear");
+                            YearList.add(arrayValue,year);
+                            arrayValue += 1;
+                        }
+                    }catch (Exception ex){
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                        alertDialog2.setTitle("Error");
+                        alertDialog2.setMessage("No Leave Data: "+ex.toString());
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog2.show();
+
+                    }
+
+                } else {
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                    alertDialog2.setTitle("Invalid");
+                    alertDialog2.setMessage("Invalid query");
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+                }
+            } catch (Exception ex) {
+                AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                alertDialog2.setTitle("Connection error");
+                alertDialog2.setMessage("Please check your internet connection");
+                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog2.show();
+
+            }
+        }
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,YearList);
+        spYear.setAdapter(adapter);
+
+        spYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -280,17 +355,16 @@ public class LeaveActivity extends AppCompatActivity {
 
             }
         });
-    }
+    } //New Edited
 
     private void setUpMonth(){
         ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,MonthList);
-        final Spinner spinner = (Spinner) findViewById(R.id.leaveMonth);
-        spinner.setAdapter(adapter);
+        spMonth.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                loadChart();
             }
 
             @Override
@@ -298,7 +372,7 @@ public class LeaveActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }//New Edited
 
     private void setUpLeaveType(){
         ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,LeaveTypeList);
@@ -422,4 +496,100 @@ public class LeaveActivity extends AppCompatActivity {
         });
     }
 
+    public void loadChart(){
+
+        int fromSPyear = Integer.parseInt(spYear.getSelectedItem().toString());
+        int fromSPmonth = spMonth.getSelectedItemPosition()+1;
+
+        if (con == null) {
+            AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+            alertDialog2.setTitle("Connection error");
+            alertDialog2.setMessage("Check your internet access");
+            alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog2.show();
+        }else{
+            try {
+                // Change below query according to your own database.
+                String query = "SELECT * FROM Leave WHERE EmpID = '"+EmpID+"'";
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                int Approved = 0;
+                int Rejected = 0;
+                int Pending = 0;
+                int LeaveLeft = 0;
+
+
+                if (rs!=null) {
+                    try{
+                        while(rs.next()){
+                            Date date = rs.getDate("LeaveSdate");
+                            Calendar cal=Calendar.getInstance();
+                            cal.setTime(date);
+                            int year = cal.get(Calendar.YEAR);
+                            int month = cal.get(Calendar.MONTH)+1;
+                            if(year==fromSPyear && month==fromSPmonth){
+                                String state = rs.getString("LeaveState");
+                                if(state.equals("1")){
+                                    Pending++;
+                                }else if (state.equals("2")){
+                                    Approved++;
+                                }else if (state.equals("3")){
+                                    Rejected++;
+                                }
+                            }
+                        }
+                        TotalDays = Integer.toString(Pending + Approved + Rejected);
+                        charValue[0] = Approved;
+                        charValue[1] = Rejected;
+                        charValue[2] = Pending;
+                        charValue[3] = LeaveLeft;
+                        setupChart();
+
+                    }catch (Exception ex){
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                        alertDialog2.setTitle("Error");
+                        alertDialog2.setMessage("No Performance Data: "+ex.toString());
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog2.show();
+
+                    }
+
+                } else {
+                    AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                    alertDialog2.setTitle("Invalid");
+                    alertDialog2.setMessage("Invalid query");
+                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog2.show();
+                }
+            } catch (Exception ex) {
+                AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                alertDialog2.setTitle("Connection error");
+                alertDialog2.setMessage("Please check your internet connection");
+                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog2.show();
+
+            }
         }
+    }
+
+}

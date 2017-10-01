@@ -35,7 +35,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         EmpID = ((Global)this.getApplication()).getEmpID();
         UserName = ((Global)this.getApplication()).getUserName();
 
-        PassReset();
+        //PassReset();
 
 
     }

@@ -19,7 +19,7 @@ import java.sql.SQLException;
 
 public class DataAccess {
 
-    String Server="107.151.161.4:1433";
+    String Server="192.168.43.141:1433";
     String User = "SQLRemote";
     String Password = "12345";
     String Database = "/HRIS";
