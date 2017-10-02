@@ -74,7 +74,6 @@
                         android:ems="10"
                         android:hint="User Name"
                         android:inputType="textPersonName"
-                        android:text="admin"
                         android:textColorHighlight="@color/colorblue"
                         android:textCursorDrawable="@color/colorblue"
                         tools:ignore="HardcodedText,InefficientWeight,RtlHardcoded" />
