@@ -140,10 +140,10 @@
                                 android:id="@+id/lblChartDesc"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="30dp"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginTop="5dp"
-                                android:layout_marginBottom="30dp"
-                                android:text="Salary Summery"
+                                android:text="Salary Summary"
                                 android:textStyle="bold" />
 
                         </LinearLayout>

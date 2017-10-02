@@ -105,39 +105,25 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     public void setPwd(String un){
-        Boolean res=null;
         try{
             String Query = "UPDATE tbl_User SET PasswordA='"+NewPassword.getText().toString()+"' WHERE UsernameA='"+un+"'";
             Statement stmt = null;
             stmt = con.createStatement();
-            res = stmt.execute(Query);
+            stmt.execute(Query);
 
-            if (res==true){
-                AlertDialog alertDialog = new AlertDialog.Builder(ChangePasswordActivity.this).create();
-                alertDialog.setTitle("Success");
-                alertDialog.setMessage("Password changed successfully");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
-                Intent intent = new Intent(ChangePasswordActivity.this,LoginActivity.class);
-                startActivity(intent);
-            }
-            else{
-                AlertDialog alertDialog = new AlertDialog.Builder(ChangePasswordActivity.this).create();
-                alertDialog.setTitle("Error");
-                alertDialog.setMessage("Error occured while changing the password");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
-            }
+            AlertDialog alertDialog = new AlertDialog.Builder(ChangePasswordActivity.this).create();
+            alertDialog.setTitle("Success");
+            alertDialog.setMessage("Password changed successfully");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+
+            Intent intent = new Intent(ChangePasswordActivity.this,LoginActivity.class);
+            startActivity(intent);
 
         }
         catch(Exception ex){

@@ -72,7 +72,7 @@
                         android:layout_weight="1"
                         android:backgroundTint="@color/colorblue"
                         android:ems="10"
-                        android:hint="User Name"
+                        android:hint="Username"
                         android:inputType="textPersonName"
                         android:textColorHighlight="@color/colorblue"
                         android:textCursorDrawable="@color/colorblue"
@@ -98,7 +98,6 @@
                         android:ems="10"
                         android:hint="Password"
                         android:inputType="textPassword"
-                        android:text="1234"
                         android:textColorHighlight="@color/colorblue"
                         android:textCursorDrawable="@color/colorblue"
                         tools:ignore="HardcodedText,InefficientWeight,RtlHardcoded" />
