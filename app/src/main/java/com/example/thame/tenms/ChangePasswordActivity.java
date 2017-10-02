@@ -112,7 +112,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             stmt = con.createStatement();
             res = stmt.execute(Query);
 
-            if (res=true){
+            if (res==true){
                 AlertDialog alertDialog = new AlertDialog.Builder(ChangePasswordActivity.this).create();
                 alertDialog.setTitle("Success");
                 alertDialog.setMessage("Password changed successfully");

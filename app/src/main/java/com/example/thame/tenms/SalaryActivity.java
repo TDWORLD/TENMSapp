@@ -27,14 +27,19 @@ import java.util.List;
 
 public class SalaryActivity extends AppCompatActivity {
 
-    String chartHeader[] = {"Basic","Allowance","No Pay","OT","Performance","Loan","ETF / EPF"};
-    int charValue[] = {0,0,0,0,0,0,0,0,0,0,0,0};
+    String chartHeader[] = {"NetSalary","LeaveAmount","EPF","ETF","OT Amount"};
+    int charValue[] = {0,0,0,0,0};
     String TotalSalary = "25000";
-    int chartColor[] = {Color.rgb(44, 197, 78),Color.rgb(219, 84, 68),Color.rgb(13, 140, 231),Color.rgb(242, 103, 38),Color.rgb(80, 85, 87),Color.rgb(0, 161, 168),Color.rgb(100, 36, 201)};
+    int chartColor[] = {Color.rgb(44, 197, 78),Color.rgb(219, 84, 68),Color.rgb(13, 140, 231),Color.rgb(242, 103, 38),Color.rgb(80, 85, 87)};
+    //int chartColor[] = {Color.rgb(44, 197, 78),Color.rgb(219, 84, 68),Color.rgb(13, 140, 231),Color.rgb(242, 103, 38),Color.rgb(80, 85, 87),Color.rgb(0, 161, 168),Color.rgb(100, 36, 201)};
 
     //String YearList[] = new String[]{"2014","2015","2016","2017"};
     ArrayList<String> YearList = new ArrayList<String>();
     String MonthList[] = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
+
+    //New Edited
+    Spinner spYear;
+    Spinner spMonth;
 
     String basicsal =  "Basic Salary Amount        : "+"30000";
     String allowance = "Allowance Amount            : "+"3000";
@@ -48,6 +53,7 @@ public class SalaryActivity extends AppCompatActivity {
     // Declaring connection variables
     Connection con;
     DataAccess db;
+    String EmpID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,53 +69,19 @@ public class SalaryActivity extends AppCompatActivity {
         db = new DataAccess();
         con =  db.getConnection();
 
+        EmpID = ((Global)this.getApplication()).getEmpID();
+
+        spYear = (Spinner) findViewById(R.id.salaryYear);//New Edited
+        spMonth = (Spinner) findViewById(R.id.salaryMonth);//New Edited
+
         setUpYear();
         setUpMonth();
-        setupChart();
-        setText();
+
+        //setupChart();
+        //setText();
 
     }
 
-    private void setupChart() {
-        List<PieEntry> pieEntrys = new ArrayList<>();
-        for(int i=0; i<chartHeader.length;i++){
-            pieEntrys.add(new PieEntry(charValue[i], chartHeader[i]));
-        }
-
-        PieDataSet dataset = new PieDataSet(pieEntrys,"");
-        dataset.setValueFormatter(new PercentFormatter());
-        dataset.setColors(chartColor);
-        PieData data = new PieData(dataset);
-        data.setValueTextSize(16);
-
-        PieChart chart = (PieChart) findViewById(R.id.chartSalary);
-        Description desc = new Description();
-        desc.setText("");
-        chart.setDescription(desc);
-        chart.setData(data);
-        chart.setCenterText("Total Salary \n"+TotalSalary);
-        chart.animateY(1000);
-        chart.invalidate();
-    }
-
-    private void setText(){
-        TextView tBasic = (TextView) findViewById(R.id.lblBasicSalary);
-        tBasic.setText(basicsal);
-        TextView tAllowance = (TextView) findViewById(R.id.lblAllowance);
-        tAllowance.setText(allowance);
-        TextView tNopay = (TextView) findViewById(R.id.lblNoPAy);
-        tNopay.setText(nopay);
-        TextView tOT = (TextView) findViewById(R.id.lblOT);
-        tOT.setText(ot);
-        TextView tPerform = (TextView) findViewById(R.id.lblPerformance);
-        tPerform.setText(perform);
-        TextView tLoan = (TextView) findViewById(R.id.lblLoan);
-        tLoan.setText(loan);
-        TextView tEtf = (TextView) findViewById(R.id.lblEtfEpf);
-        tEtf.setText(etf);
-        TextView tTotal = (TextView) findViewById(R.id.lblTotalSalary);
-        tTotal.setText(totalsal);
-    }
 
     private void setUpYear(){
 
@@ -127,16 +99,15 @@ public class SalaryActivity extends AppCompatActivity {
         }else{
             try {
                 // Change below query according to your own database.
-                String query = "SELECT DISTINCT TOP 10 Year FROM Performance ORDER BY Year DESC";
+                String query = "SELECT DISTINCT TOP 10 SalaryYear FROM Salary ORDER BY SalaryYear DESC";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 int arrayValue = 0;
 
                 if (rs!=null) {
-
                     try{
                         while(rs.next()){
-                            String year = rs.getString("Year");
+                            String year = rs.getString("SalaryYear");
                             YearList.add(arrayValue,year);
                             arrayValue += 1;
                         }
@@ -182,16 +153,12 @@ public class SalaryActivity extends AppCompatActivity {
         }
 
         ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,YearList);
-        final Spinner spinner = (Spinner) findViewById(R.id.performYear);
-        spinner.setAdapter(adapter);
+        spYear.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String val = spinner.getSelectedItem().toString();
 
-                getData(val);
-                setupChart();
             }
 
             @Override
@@ -201,7 +168,80 @@ public class SalaryActivity extends AppCompatActivity {
         });
     }
 
-    public void getData(String Year){
+    private void setUpMonth(){
+        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,MonthList);
+        spMonth.setAdapter(adapter);
+
+        spMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getData();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setupChart(String CenterText) {
+        List<PieEntry> pieEntrys = new ArrayList<>();
+        for(int i=0; i<chartHeader.length;i++){
+            pieEntrys.add(new PieEntry(charValue[i], chartHeader[i]));
+        }
+
+        PieDataSet dataset = new PieDataSet(pieEntrys,"");
+        //dataset.setValueFormatter(new PercentFormatter());
+        dataset.setColors(chartColor);
+        PieData data = new PieData(dataset);
+        data.setValueTextSize(16);
+
+        PieChart chart = (PieChart) findViewById(R.id.chartSalary);
+        Description desc = new Description();
+        desc.setText("");
+        chart.setDescription(desc);
+        chart.setData(data);
+        chart.setCenterText(CenterText);
+        chart.animateY(1000);
+        chart.invalidate();
+    }
+/*
+    private void setText(String structurid){
+
+        try {
+
+            // Change below query according to your own database.
+            String query = "SELECT * FROM SalaryStructure WHERE SalaryStructure='"+structurid+"'";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+        }catch (Exception ex){
+
+        }
+        TextView tBasic = (TextView) findViewById(R.id.lblBasicSalary);
+        tBasic.setText(basicsal);
+        TextView tAllowance = (TextView) findViewById(R.id.lblAllowance);
+        tAllowance.setText(allowance);
+        TextView tNopay = (TextView) findViewById(R.id.lblNoPAy);
+        tNopay.setText(nopay);
+        TextView tOT = (TextView) findViewById(R.id.lblOT);
+        tOT.setText(ot);
+        TextView tPerform = (TextView) findViewById(R.id.lblPerformance);
+        tPerform.setText(perform);
+        TextView tLoan = (TextView) findViewById(R.id.lblLoan);
+        tLoan.setText(loan);
+        TextView tEtf = (TextView) findViewById(R.id.lblEtfEpf);
+        tEtf.setText(etf);
+        TextView tTotal = (TextView) findViewById(R.id.lblTotalSalary);
+        tTotal.setText(totalsal);
+    }
+*/
+
+    public void getData(){
+
+        int fromSPyear = Integer.parseInt(spYear.getSelectedItem().toString());
+        int fromSPmonth = spMonth.getSelectedItemPosition()+1;
 
         if (con == null) {
             AlertDialog alertDialog2 = new AlertDialog.Builder(SalaryActivity.this).create();
@@ -218,20 +258,29 @@ public class SalaryActivity extends AppCompatActivity {
             try {
 
                 // Change below query according to your own database.
-                String query = "SELECT Month, Performance FROM Performance WHERE EmpID = ' AND Year = '"+Year+"' ORDER BY Month ASC";
+                String query = "SELECT * FROM Salary WHERE EmpID ='"+EmpID+"' AND SalaryYear = '"+fromSPyear+"' AND SalaryMonth = '"+fromSPmonth+"'";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
-                for(int i=0; i<12;i++){
+                for(int i=0; i<5;i++){
                     charValue[i] = 0;
                 }
                 if (rs!=null) {
 
                     try{
-                        while(rs.next()){
-                            String performance = rs.getString("Performance");
-                            int month = Integer.parseInt(rs.getString("Month"));
-                            double dd = Double.parseDouble(performance);
-                            charValue[month] = (int) dd;
+                        if(rs.next()){
+                            charValue[0] = rs.getInt("NetSalary");
+                            charValue[1] = rs.getInt("LeaveAmount");
+                            charValue[2] = rs.getInt("Epf");
+                            charValue[3] = rs.getInt("Etf");
+                            charValue[4] = rs.getInt("OTAmount");
+                            setupChart("");
+                        }else{
+                            charValue[0] = 0;
+                            charValue[1] = 0;
+                            charValue[2] = 0;
+                            charValue[3] = 0;
+                            charValue[4] = 0;
+                            setupChart("No Data Available");
                         }
                     }catch (Exception ex){
                         AlertDialog alertDialog2 = new AlertDialog.Builder(SalaryActivity.this).create();
@@ -275,21 +324,5 @@ public class SalaryActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpMonth(){
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listitem,R.id.Item,MonthList);
-        final Spinner spinner = (Spinner) findViewById(R.id.salaryMonth);
-        spinner.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
 }

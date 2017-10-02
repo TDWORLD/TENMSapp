@@ -142,87 +142,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginBottom="30dp"
                                 android:text="Salary Summery"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/lblBasicSalary"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:text="Basic Salary Amount :"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/lblAllowance"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:text="Allowance Amount :"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/lblNoPAy"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_weight="1"
-                                android:text="No Pay Amount :"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/lblOT"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_weight="1"
-                                android:text="OT Amount :"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/lblPerformance"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_weight="1"
-                                android:text="Performance Amount :"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/lblLoan"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_weight="1"
-                                android:text="Loan Reduction Amount :"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/lblEtfEpf"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_weight="1"
-                                android:text="ETF / EPF Amount :"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/lblTotalSalary"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="20dp"
-                                android:layout_weight="1"
-                                android:text="Total Salary Amount :"
-                                android:textSize="18sp"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
