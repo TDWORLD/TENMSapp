@@ -6,11 +6,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -37,7 +39,7 @@ public class EmployeeActivity extends AppCompatActivity {
     Button Cancel;
     int gnder;
 
-    String genderList[] = new String[]{"-Select-","Male","Female"};
+    String genderList[] = new String[]{"-SELECT-","Male","Female"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,39 @@ public class EmployeeActivity extends AppCompatActivity {
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateEmployee();
+                if (TextUtils.isEmpty(Address1.getText().toString())){
+                    Address1.setError("Please enter your address line 1");
+                }
+                else if (TextUtils.isEmpty(Address2.getText().toString())){
+                    Address2.setError("Please enter your address line 2");
+                }
+                else if (TextUtils.isEmpty(TPHome.getText().toString())){
+                    TPHome.setError("Please enter your home telephone number");
+                }
+                else if (TextUtils.isEmpty(TPMobile.getText().toString())){
+                    TPMobile.setError("Please enter your mobile phone number");
+                }
+                else if (TextUtils.isEmpty(EmpNIC.getText().toString())){
+                    EmpNIC.setError("Please enter your NIC number");
+                }
+                else if (TextUtils.isEmpty(EmpDOB.getText().toString())){
+                    EmpDOB.setError("Please enter your birthday");
+                }
+                else if (Gender.getSelectedItem().toString().equals("-SELECT-")){
+                    ((TextView)Gender.getSelectedView()).setError("Please select a category to continue");
+                }
+                else if(EmpNIC.getText().toString().length()<10){
+                    EmpNIC.setError("NIC number must have 10 digits");
+                }
+                else if(TPHome.getText().toString().length()<10){
+                    TPHome.setError("Home telephone number must have 10 digits");
+                }
+                else if(TPMobile.getText().toString().length()<10){
+                    TPMobile.setError("Mobile phone number must have 10 digits");
+                }
+                else{
+                    updateEmployee();
+                }
             }
         });
 
@@ -109,8 +143,8 @@ public class EmployeeActivity extends AppCompatActivity {
                         Address1.setText(rs.getString("EmpAddress1"));
                         Address2.setText(rs.getString("EmpAddress2"));
                         Gender.setSelection(rs.getInt("EmpGender"));
-                        TPHome.setText(rs.getString("EmpTeleH"));
-                        TPMobile.setText(rs.getString("EmpTeleM"));
+                        TPHome.setText("0"+rs.getString("EmpTeleH"));
+                        TPMobile.setText("0"+rs.getString("EmpTeleM"));
                         EmpNIC.setText(rs.getString("EmpNic"));
                         EmpDOB.setText(rs.getString("EmpDob"));
                     }
@@ -132,7 +166,7 @@ public class EmployeeActivity extends AppCompatActivity {
             else {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(EmployeeActivity.this).create();
                 alertDialog2.setTitle("Error");
-                alertDialog2.setMessage("Error in connettion. Please try again later");
+                alertDialog2.setMessage("Error in connection. Please try again later");
                 alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -146,7 +180,7 @@ public class EmployeeActivity extends AppCompatActivity {
         } catch (Exception ex) {
             AlertDialog alertDialog2 = new AlertDialog.Builder(EmployeeActivity.this).create();
             alertDialog2.setTitle("Error");
-            alertDialog2.setMessage("Error in connettion. Please try again later");
+            alertDialog2.setMessage("Error in connection. Please try again later");
             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -195,7 +229,7 @@ public class EmployeeActivity extends AppCompatActivity {
         catch(Exception ex){
             AlertDialog alertDialog2 = new AlertDialog.Builder(EmployeeActivity.this).create();
             alertDialog2.setTitle("Error");
-            alertDialog2.setMessage("Error occured. Please try again later");
+            alertDialog2.setMessage(ex.getMessage().toString());
             alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
