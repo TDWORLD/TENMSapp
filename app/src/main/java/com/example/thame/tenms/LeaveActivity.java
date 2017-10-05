@@ -20,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,6 +31,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -268,6 +270,23 @@ public class LeaveActivity extends AppCompatActivity {
             String text = Long.toString(days+1);
             numdays.setText(text);
 
+            if(days<0) {
+                AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                alertDialog2.setTitle("Error");
+                alertDialog2.setMessage("Leave end date should be a new date than leave start date");
+                alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog2.show();
+
+                beginDate.setText("");
+                endDate.setText("");
+            }
+
+
         } catch (Exception e) {
             numdays.setText("0");
         }
@@ -383,7 +402,18 @@ public class LeaveActivity extends AppCompatActivity {
         spLeaveType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                if(spLeaveType.getSelectedItemPosition()==1||spLeaveType.getSelectedItemPosition()==4){
+                    beginDate.setEnabled(true);
+                    endDate.setEnabled(true);
+                }
+                else if (spLeaveType.getSelectedItemPosition()==0){
+                    beginDate.setEnabled(false);
+                    endDate.setEnabled(false);
+                }
+                else{
+                    beginDate.setEnabled(true);
+                    endDate.setEnabled(false);
+                }
             }
 
             @Override
@@ -421,58 +451,63 @@ public class LeaveActivity extends AppCompatActivity {
     private void clickLeave() {
         getID();
         final String[] categoryName = new String[1];
-        /*final Spinner spinner = (Spinner) findViewById(R.id.spLeaveType);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
 
         Button btnClick = (Button) findViewById(R.id.btnLeaveSave);
         Reason = (EditText) findViewById(R.id.txtLeaveReason);
         NoOfDays = (EditText) findViewById(R.id.txtLeaveNoOfDays);
+        spLeaveType = (Spinner)findViewById(R.id.spLeaveType);
         btnClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
+                if (spLeaveType.getSelectedItemPosition()==0){
+                    ((TextView)spLeaveType.getSelectedView()).setError("Please select a leave category to continue");
+                }
+                else if (TextUtils.isEmpty(Reason.getText().toString())){
+                    Reason.setError("Please enter the leave reason");
+                }
+                else if (TextUtils.isEmpty(beginDate.getText().toString())){
+                    beginDate.setError("Please select your leave start date");
+                }
+                else if (TextUtils.isEmpty(endDate.getText().toString())){
+                    endDate.setError("Please select your leave end date");
+                }
+                else {
+                    try {
+                        //SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+                        //Date startDate = format.parse(beginDate.getText().toString());
 
-                    String Query = "INSERT INTO Leave(LeaveID,LeaveType,LeaveRDate,LeaveSDate,LeaveEDate,LeaveReason,LeaveState,SystemHelpLeave,EmpID) " +
-                            "VALUES('"+LeaveID.getText()+"','"+spLeaveType.getSelectedItemPosition()+"','"+Today+"','"+beginDate.getText()+"','"+endDate.getText()+"','"+Reason.getText()+"','"+1+"','"+0+"','"+EmpID+"')";
-                    //String Query = "INSERT INTO Leave VALUES('"+LeaveID.getText()+"','2','2017-09-23','2017-09-24','2017-09-25','rehhfhfh','1','0','10')";
-                    Statement stmt = null;
-                    //con = db.getConnection();
-                    stmt = con.createStatement();
-                    Boolean res = stmt.execute(Query);
+                        String Query = "INSERT INTO Leave(LeaveID,LeaveType,LeaveRDate,LeaveSDate,LeaveEDate,LeaveReason,LeaveState,SystemHelpLeave,EmpID) " +
+                                "VALUES('" + LeaveID.getText() + "','" + spLeaveType.getSelectedItemPosition() + "','" + Today + "','" + beginDate.getText() + "','" + endDate.getText() + "','" + Reason.getText() + "','" + 1 + "','" + 0 + "','" + EmpID + "')";
+                        //String Query = "INSERT INTO Leave VALUES('"+LeaveID.getText()+"','2','2017-09-23','2017-09-24','2017-09-25','rehhfhfh','1','0','10')";
+                        Statement stmt = null;
+                        //con = db.getConnection();
+                        stmt = con.createStatement();
+                        Boolean res = stmt.execute(Query);
 
-                    AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
-                    alertDialog2.setTitle("Success");
-                    alertDialog2.setMessage("Your Leave Added Successfully");
-                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog2.show();
-                    getID();
-                    Clean();
-                }catch (Exception ex){
-                    AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
-                    alertDialog2.setTitle("Error");
-                    alertDialog2.setMessage("Error occured while adding leaves to the system.");
-                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog2.show();
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                        alertDialog2.setTitle("Success");
+                        alertDialog2.setMessage("Your Leave Added Successfully");
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog2.show();
+                        getID();
+                        Clean();
+                    } catch (Exception ex) {
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(LeaveActivity.this).create();
+                        alertDialog2.setTitle("Error");
+                        alertDialog2.setMessage("Error occured while adding leaves to the system.");
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog2.show();
+                    }
                 }
             }
         });

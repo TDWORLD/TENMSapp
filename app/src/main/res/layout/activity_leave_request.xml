@@ -109,7 +109,7 @@
                         android:editable="false"
                         android:ems="10"
                         android:enabled="true"
-                        android:hint="YYYY/MM/DD"
+                        android:hint="YYYY-MM-DD"
                         android:inputType="textMultiLine"
                         android:textAlignment="textStart"
                         tools:editable="false" />
@@ -151,7 +151,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:ems="10"
-                        android:enabled="true"
+                        android:enabled="false"
                         android:hint="5"
                         android:inputType="textPersonName" />
 
