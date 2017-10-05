@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,12 +53,14 @@ public class AnnouncementActivity extends AppCompatActivity {
     Spinner spComplainType;
     EditText txtComplainTitle;
     EditText txtComplain;
+    EditText txtComplainDate;
+    Calendar myCalendar = Calendar.getInstance();
 
     DatePickerDialog.OnDateSetListener DateSetListner;
 
     //String dataList[] = new String[]{"","","","","","","","","",""};
     ArrayList<String> dataList = new ArrayList<String>();
-    String CategoryList[] = new String[]{"Accountant","Driver","Sales","Marketing","Security","Other"};
+    String CategoryList[] = new String[]{"-SELECT-","Accountant","Driver","Sales","Marketing","Security","Other"};
 
     //String AnnounceList[] = new String[]{"","","","","","","","","",""};
     ArrayList<String> AnnounceList = new ArrayList<String>();
@@ -417,39 +420,63 @@ public class AnnouncementActivity extends AppCompatActivity {
         Button btnClick = (Button) findViewById(R.id.btnComplainSave);
         txtComplainTitle = (EditText) findViewById(R.id.txtComplainTitle);
         txtComplain = (EditText) findViewById(R.id.txtComplain);
+        txtComplainDate = (EditText) findViewById(R.id.txtComplainDate);
+        spComplainType = (Spinner)findViewById(R.id.complainType);
+        if (myCalendar.get(Calendar.DATE)<10){
+            String dateeToday = myCalendar.get(Calendar.YEAR) + "-" + (myCalendar.get(Calendar.MONTH) + 1) + "-0" + myCalendar.get(Calendar.DATE);
+            txtComplainDate.setText(dateeToday);
+        }
+        else if ((myCalendar.get(Calendar.MONTH) + 1)<10){
+            String dateeToday = myCalendar.get(Calendar.YEAR) + "-0" + (myCalendar.get(Calendar.MONTH) + 1) + "-" + myCalendar.get(Calendar.DATE);
+            txtComplainDate.setText(dateeToday);
+        }
+        else{
+            String dateeToday = myCalendar.get(Calendar.YEAR) + "-" + (myCalendar.get(Calendar.MONTH) + 1) + "-" + myCalendar.get(Calendar.DATE);
+            txtComplainDate.setText(dateeToday);
+        }
         btnClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    String Query = "INSERT INTO Complain(ComplainID,ComplainTitle,ComplainBody,ComplainCategory,ComplainDate,ComplainState) VALUES('"+txtComplainID.getText()+"','"+txtComplainTitle.getText()+"','"+txtComplain.getText()+"','"+spComplainType.getSelectedItem()+"','"+cDate.getText()+"','Open')";
-                    //String Query = "INSERT INTO Complain VALUES('kkkkk','bbbbb','lllll','fgdfgfdg','2017-05-25','Open')";
-                    Statement stmt = null;
-                    stmt = con.createStatement();
-                    Boolean res = stmt.execute(Query);
+                if (TextUtils.isEmpty(txtComplainTitle.getText().toString())) {
+                    txtComplainTitle.setError("Please enter the complain title");
+                }
+                else if (TextUtils.isEmpty(txtComplain.getText().toString())){
+                    txtComplain.setError("Please enter the complain description");
+                }
+                else if (spComplainType.getSelectedItem().toString().equals("-SELECT-")){
+                    ((TextView)spComplainType.getSelectedView()).setError("Please select a category to continue");
+                }
+                else {
+                    try {
+                        String Query = "INSERT INTO Complain(ComplainID,ComplainTitle,ComplainBody,ComplainCategory,ComplainDate,ComplainState) VALUES('" + txtComplainID.getText() + "','" + txtComplainTitle.getText() + "','" + txtComplain.getText() + "','" + spComplainType.getSelectedItem() + "','" + cDate.getText() + "','Open')";
+                        Statement stmt = null;
+                        stmt = con.createStatement();
+                        stmt.execute(Query);
 
-                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                    alertDialog2.setTitle("Success");
-                    alertDialog2.setMessage("Your complain added successfully to the system.");
-                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog2.show();
-                    getID();
-                    Clean();
-                }catch (Exception ex){
-                    AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
-                    alertDialog2.setTitle("Error");
-                    alertDialog2.setMessage("Error occured while inserting data to the database");
-                    alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog2.show();
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                        alertDialog2.setTitle("Success");
+                        alertDialog2.setMessage("Your complain added successfully to the system.");
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog2.show();
+                        getID();
+                        Clean();
+                    } catch (Exception ex) {
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(AnnouncementActivity.this).create();
+                        alertDialog2.setTitle("Error");
+                        alertDialog2.setMessage("Error occured while inserting data to the database");
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog2.show();
+                    }
                 }
             }
         });

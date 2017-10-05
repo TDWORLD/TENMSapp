@@ -92,9 +92,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(uname.getText().toString())) {
                     uname.setError("Please enter the username");
-                } else if (TextUtils.isEmpty(pword.getText().toString())) {
+                }
+                else if (TextUtils.isEmpty(pword.getText().toString())) {
                     pword.setError("Please enter the password");
-                } else {
+                }
+                else {
                     proLogin.setIndeterminate(true);
                     proLogin.setVisibility(View.VISIBLE);
 

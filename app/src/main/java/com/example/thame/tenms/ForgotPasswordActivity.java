@@ -100,8 +100,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     public void getData(String EmpID,String UserName){
         ResultSet rs;
+
         try{
             Pin = ((Global)this.getApplication()).getResetPin();
+
             String query2 = "SELECT * FROM Employee WHERE EmpID=(SELECT EmpID FROM tbl_User WHERE UsernameA='"+UserName+"')";
             Statement stmt2 = con.createStatement();
             rs = stmt2.executeQuery(query2);

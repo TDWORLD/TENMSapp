@@ -113,7 +113,9 @@
                         android:id="@+id/txtComplainID"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:editable="false"
                         android:ems="10"
+                        android:enabled="true"
                         android:hint="CO0010"
                         android:inputType="textPersonName" />
 
@@ -173,9 +175,11 @@
                         android:id="@+id/txtComplainDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:editable="false"
                         android:ems="10"
+                        android:enabled="false"
                         android:hint="YYYY/MM/DD"
-                        android:inputType="textPersonName" />
+                        android:inputType="date" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
