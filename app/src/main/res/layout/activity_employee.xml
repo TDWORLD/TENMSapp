@@ -98,7 +98,7 @@
                                 android:ems="10"
                                 android:enabled="false"
                                 android:inputType="textPersonName"
-                                android:text="EMP00012" />
+                                android:text="00001" />
 
                             <TextView
                                 android:id="@+id/lblfirstname"
@@ -154,8 +154,8 @@
                                 android:layout_marginRight="10dp"
                                 android:ems="10"
                                 android:enabled="true"
-                                android:inputType="textPersonName"
-                                android:text="No 2/25" />
+                                android:hint="No 2/25"
+                                android:inputType="textPersonName" />
 
                             <TextView
                                 android:id="@+id/lbladd2"
@@ -173,8 +173,8 @@
                                 android:layout_marginRight="10dp"
                                 android:ems="10"
                                 android:enabled="true"
-                                android:inputType="textPersonName"
-                                android:text="Gandara" />
+                                android:hint="Matara"
+                                android:inputType="textPersonName" />
 
                             <TextView
                                 android:id="@+id/lbladd3"
@@ -215,8 +215,8 @@
                                 android:layout_marginRight="10dp"
                                 android:ems="10"
                                 android:enabled="true"
-                                android:inputType="textPersonName"
-                                android:text="0414568255" />
+                                android:hint="0412233445"
+                                android:inputType="textPersonName" />
 
                             <TextView
                                 android:id="@+id/lblmobile"
@@ -234,8 +234,8 @@
                                 android:layout_marginRight="10dp"
                                 android:ems="10"
                                 android:enabled="true"
-                                android:inputType="textPersonName"
-                                android:text="0719586458" />
+                                android:hint="0712233445"
+                                android:inputType="textPersonName" />
 
                             <TextView
                                 android:id="@+id/lblNIC"
@@ -253,8 +253,8 @@
                                 android:layout_marginRight="10dp"
                                 android:ems="10"
                                 android:enabled="true"
-                                android:inputType="textEmailAddress"
-                                android:text="thame@gmail.com" />
+                                android:hint="abc@gmail.com"
+                                android:inputType="textEmailAddress" />
 
                             <TextView
                                 android:id="@+id/lblDOB"

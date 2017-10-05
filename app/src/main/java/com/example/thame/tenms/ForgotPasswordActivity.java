@@ -162,6 +162,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         EmpID = txtEmpID.getText().toString();
         UserName = txtUserName.getText().toString();
 
+        ((Global)this.getApplication()).setUserName(UserName);
+
         getData(EmpID,UserName);
     }
 

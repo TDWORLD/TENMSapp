@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (con != null) {
 
                     // Change below query according to your own database.
-                    String query = "SELECT * FROM tbl_User WHERE UsernameA= '" + usernam.toString() + "' AND PasswordA = '" + passwordd.toString() + "'";
+                    String query = "SELECT * FROM tbl_User WHERE UsernameA= '" + usernam.toString() + "' AND PasswordA = '" + passwordd.toString() + "' AND UserStatus='1'";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
                     if (rs.next()){
