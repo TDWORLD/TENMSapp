@@ -75,7 +75,7 @@ public class LeaveActivity extends AppCompatActivity {
     EditText NoOfDays;
 
     EditText numdays;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     Date date = new Date();
     String Today = dateFormat.format(date).toString();
@@ -177,7 +177,7 @@ public class LeaveActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                String date = year + "/" + month + "/" + dayOfMonth;
+                String date = year + "-" + month + "-" + dayOfMonth;
                 beginDate.setText(date);
             }
         };
@@ -209,7 +209,7 @@ public class LeaveActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                String date = year + "/" + month + "/" + dayOfMonth;
+                String date = year + "-" + month + "-" + dayOfMonth;
                 endDate.setText(date);
             }
         };
@@ -412,7 +412,7 @@ public class LeaveActivity extends AppCompatActivity {
                 }
                 else{
                     beginDate.setEnabled(true);
-                    endDate.setEnabled(false);
+                    endDate.setEnabled(true);
                 }
             }
 
